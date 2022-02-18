@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+body{
+    width: 980px;
+    margin: auto;
+    text-align: center;
+}
+
+.flex{
+    display: flex;
+}
+
+[v-cloak] {
+    display: none;
+}
