@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <title>None</title>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
@@ -23,11 +23,22 @@
       to avoid connecting the SDK to running emulators.
     -->
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="src/jquery-3.6.0.min.js"></script>
+    <script src="src/vue.js"></script>
 </head>
 
 <body>
-    <div id="main">
-        hello world
+    <div id="main" v-cloak>
+        <!-- 以下のコードは検索画面のテスト -->
+        <h2 @click="get">ホーム(優先度:必須)</h2>
+        <input type="text" name="txt" id="txt">
+        <ul>
+            <li id="test" v-for="val in list">
+                    {{ val.title }}
+                    {{ val.author }}
+            </li>
+        </ul>
     </div>
     <script src="src/main.js"></script>
 </body>
