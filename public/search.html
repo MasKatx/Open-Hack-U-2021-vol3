@@ -17,11 +17,11 @@
 
 <body>
     <div id="main" v-cloak>
-        <h2>検索画面(優先度:高)</h2>
+        <h2>書籍検索</h2>
         <input type="text" v-model="title" id="title" placeholder="タイトル"><br>
         <input type="text" v-model="author" id="author" placeholder="著者名"><br>
         <input type="text" v-model="publisher" id="publisherName" placeholder="出版社"><br>
-        <input type="text" v-model="isbn" id="isbn" placeholder="ISBN"><br>
+        <!-- <input type="text" v-model="isbn" id="isbn" placeholder="ISBN"><br> -->
         <select name="sortSelect" id="sort">
             <option value="standard">並び替え</option>
             <option value="sales">売れている</option>
@@ -34,7 +34,7 @@
         </select>
         <input type="button" value="検索" @click="bookSearch">
         <div>
-            <div class="result flex" v-for="val in list">
+            <div class="result flex" v-for="val in bookSearchResult">
                     <img :src="val.img" id="resultImg"><br>
                     {{ val.title }}<br>
                     {{ val.author }}<br>
@@ -44,6 +44,7 @@
         </div>
     </div>
     <script src="src/main.js"></script>
+    <script src="src/sub.js"></script>
 </body>
 
 </html>
