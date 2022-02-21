@@ -30,17 +30,21 @@
 
 <body>
     <div id="main" v-cloak>
-        <!-- 以下のコードは検索画面のテスト -->
-        <h2 @click="get">ホーム(優先度:必須)</h2>
-        <input type="text" name="txt" id="txt">
-        <ul>
-            <li id="test" v-for="val in list">
-                    {{ val.title }}
-                    {{ val.author }}
-                    <img :src="val.img" alt="">
-            </li>
-        </ul><a href="search.html">Hellooooooooooooooooooo</a>
-
+        <!-- DBにある所持している本の情報を一覧表示する -->
+        <div class="disp bookInfoLst" v-for="val in bookInfo">
+            <!-- <a :href="val.url" id="imgURL" target="_blank" ><img :src="val.img"></a><br> -->
+            <ul>
+                <li v-for="val in booksInfo">
+                    <img src="val.url" id="resultImg" alt="本の画像">
+                    {{ val.title }}<br>
+                    {{ val.author }}<br>
+                <button v-on:click="read">読む</button>
+                </li>
+            </ul>
+            
+            <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+        </div>
+        <a href="search.html">Hellooooooooooooooooooo</a>
     </div>
     <script src="src/main.js"></script>
 </body>
