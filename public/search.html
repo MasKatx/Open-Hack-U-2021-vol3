@@ -35,7 +35,7 @@
         <input type="button" value="検索" @click="bookSearch">
         <div>
             <div class="result flex" v-for="val in bookSearchResult">
-                    <img :src="val.img" id="resultImg"><br>
+                    <a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a><br>
                     {{ val.title }}<br>
                     {{ val.author }}<br>
                     {{ val.price }}<br>
