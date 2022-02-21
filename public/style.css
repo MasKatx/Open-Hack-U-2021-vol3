@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body{
-    width: 980px;
+    width: auto;
     margin: auto;
     text-align: center;
 }
@@ -10,6 +10,21 @@ body{
     display: flex;
 }
 
+.flex a{
+    margin-top: auto;
+    margin-left: auto;
+    margin: auto 30px 0 auto;
+}
+
+.flex img{
+    margin: 10px;
+}
+
 [v-cloak] {
     display: none;
+}
+
+.result{
+    text-align: left;
+    margin: 10px;
 }

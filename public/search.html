@@ -17,14 +17,31 @@
 
 <body>
     <div id="main" v-cloak>
-        <h2 @click="get">検索画面(優先度:高)</h2>
-        <input type="text" name="txt" id="txt">
-        <ul>
-            <li id="test" v-for="val in list">
-                    {{ val.title }}
-                    {{ val.author }}
-            </li>
-        </ul>
+        <h2>検索画面(優先度:高)</h2>
+        <input type="text" v-model="title" id="title" placeholder="タイトル"><br>
+        <input type="text" v-model="author" id="author" placeholder="著者名"><br>
+        <input type="text" v-model="publisher" id="publisherName" placeholder="出版社"><br>
+        <input type="text" v-model="isbn" id="isbn" placeholder="ISBN"><br>
+        <select name="sortSelect" id="sort">
+            <option value="standard">並び替え</option>
+            <option value="sales">売れている</option>
+            <option value="%2BreleaseDate">発売日(古い)</option>
+            <option value="-releaseDate">発売日(新しい)</option>
+            <option value="%2BitemPrice">価格が安い</option>
+            <option value="-itemPrice">価格が高い</option>
+            <option value="reviewCount">レビューが多い</option>
+            <option value="reviewAverage">評価が高い</option>
+        </select>
+        <input type="button" value="検索" @click="bookSearch">
+        <div>
+            <div class="result flex" v-for="val in list">
+                    <img :src="val.img" id="resultImg"><br>
+                    {{ val.title }}<br>
+                    {{ val.author }}<br>
+                    {{ val.price }}<br>
+                    <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+            </div>
+        </div>
     </div>
     <script src="src/main.js"></script>
 </body>
