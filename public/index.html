@@ -30,19 +30,23 @@
 
 <body>
     <div id="main" v-cloak>
-        <!-- 以下のコードは検索画面のテスト -->
-        <h2 @click="get">ホーム(優先度:必須)</h2>
-        <input type="text" name="txt" id="txt">
-        <ul>
-            <li id="test" v-for="val in list">
-                    {{ val.title }}
-                    {{ val.author }}
-                    <img :src="val.img" alt="">
-            </li>
-        </ul><a href="search.html">Hellooooooooooooooooooo</a>
-
+        <h2>ホーム</h2>
+        <!-- DBにある所持している本の情報を一覧表示する -->
+        <div class="bookList flex" :id="val.isbn" v-for="val in myBook">
+            <img :src="val.img" class="imgURL" id="resultImg" alt="本の画像">
+            {{ val.title }}<br>
+            {{ val.author }}<br>
+            <input type="button" value="読む" @click="read">
+            <input type="button" value="記録" @click="bookRecord(val.isbn)">
+            <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+        </div>
+        <input type="text" id="isbn" placeholder="ISBNを入力" v-model="isbn">
+        <input type="button" value="add" @click="myBookAdd">
+        <p @click="myBooksGet">test</p>
+        <a href="search.html">Hellooooooooooooooooooo</a>
     </div>
     <script src="src/main.js"></script>
+    <script src="src/sub.js"></script>
 </body>
 
 </html>
