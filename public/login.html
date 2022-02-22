@@ -2,24 +2,85 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ログイン</title>
-<!-- ここから -->
-    <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
-    <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-    <link rel="stylesheet" href="style.css">
-    <script src="src/jquery-3.6.0.min.js"></script>
-    <script src="src/vue.js"></script>
-<!-- ここまではいじらないで -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ログイン</title>
+  <!-- ここから -->
+  <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
+  <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
+  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="src/jquery-3.6.0.min.js"></script>
+  <script src="src/vue.js"></script>
+  <!-- ここまではいじらないで -->
+
+  <style>
+    /* container */
+    .wrapper {
+      width: 100%;
+      background-color: #fafafa;
+    }
+    .wrapper .container {
+      max-width: 1000px;
+      margin: 0px auto;
+      padding: 80px 0px;
+    }
+    /* content */
+    @media (min-width: 992px) {
+      .wrapper .container .content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    .wrapper .content-item {
+      width: 100%;
+    }
+    @media (min-width: 992px) {
+      .wrapper .content-item {
+        width: 50%;
+      }
+    }
+    .wrapper .image {
+      display: block;
+      max-width: 100%;
+      margin: 0px auto;
+    }
+    .wrapper .text {
+      padding: 50px;
+    }
+    .wrapper .text .heading {
+      margin: 0px 0px 40px 0px;
+      font-size: 24px;
+      font-weight: normal;
+      text-align: center;
+    }
+  </style>
+
 </head>
 
 <body>
-    <div id="main" v-cloak>
-        <h2>ログイン画面(優先度:低)</h2>
+  <!-- <div id="main" v-cloak>
+    <h2>ログイン画面(優先度:低)</h2>
+  </div> -->
+  <!-- <script src="src/main.js"></script> -->
+
+  <section class="wrapper">
+    <div class="container">
+      <div class="content">
+        <div class="content-item">
+          <img src="img/login.jpg" class="image">
+        </div>
+        <div class="content-item">
+          <div class="text">
+            <h1>アプリケーション名</h1>
+            <h2 class="heading">ログイン</h2>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- <script src="src/main.js"></script> -->
+  </section>
+
 </body>
 
 </html>
