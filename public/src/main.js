@@ -1,7 +1,10 @@
 let db = {};
-document.addEventListener("DOMContentLoaded", async function(){
+document.addEventListener("DOMContentLoaded", async function () {
     db = await firebase.firestore();
     vm.myBooksGet();
+    if (location.pathname == "/timer.html") {
+        vm.timerLoad();
+    }
 });
 
 const vm = new Vue({
@@ -17,6 +20,8 @@ const vm = new Vue({
         startTime: 0,
         endTime: 0,
         elapsedTime: 0,
+        passSecond: 0,
+        countUp: null,
     },
     methods: {
         bookSearch: async function () {
@@ -28,7 +33,7 @@ const vm = new Vue({
             url += this.author != "" ? `&author=${this.author}` : "";
             url += this.publisher != "" ? `&publisherName=${this.publisher}` : "";
             // url += this.isbn != "" ? `&isbn=${this.isbn}` : "";
-            if (url === urlTmp){
+            if (url === urlTmp) {
                 alert("入力してください");
                 return;
             }
@@ -53,7 +58,7 @@ const vm = new Vue({
             }
         },
 
-        myBooksGet: async function() {
+        myBooksGet: async function () {
             this.myBook = [];
             const userName = "ishida";
             // users(c) -> user(d) -> ishida(c) -> book(d)
@@ -67,12 +72,12 @@ const vm = new Vue({
             // console.log(testLog.docs.map(postDoc => postDoc.id))
             testLog.forEach((postDoc) => {
                 const dic = postDoc.data();
-                this.myBook.push({title: dic.title, author: dic.author, img: dic.img, url: dic.url, isbn: dic.isbn});
+                this.myBook.push({ title: dic.title, author: dic.author, img: dic.img, url: dic.url, isbn: dic.isbn });
                 console.log(postDoc.id, ' => ', dic);
             });
         },
 
-        myBookAdd: async function() {
+        myBookAdd: async function () {
             if (this.isbn.length != 13) {
                 alert("13桁のISBNを入力してください");
                 return;
@@ -112,27 +117,34 @@ const vm = new Vue({
             this.myBooksGet();
         },
 
-        read: function() {
+        read: function (isbn) {
+            window.location.href = `http://localhost:5000/timer.html?isbn=${isbn}`;
+        },
+
+        timerLoad: function () {
             this.timerStart();
+            this.passSecond = Math.floor((Date.now() - this.startTime) / 1000);
+            this.countUp = setInterval(() => this.passSecond++, 1000);
         },
 
-        end: function() {
-            this.timerEnd();
-        },
+        // timerUp: function () {
+        //     this.passSecond++;
+        // },
 
-        timerStart: function() {
+        timerStart: function () {
             console.log("start");
             this.startTime = Date.now();
         },
 
-        timerEnd: function() {
+        timerEnd: function () {
             this.endTime = Date.now();
             this.elapsedTime = this.endTime - this.startTime;
             const second = this.elapsedTime / 1000;
+            clearInterval(this.countUp);
             console.log(second);
         },
 
-        bookRecord: function(isbn) {
+        bookRecord: function (isbn) {
             window.location.href = `http://localhost:5000/reading_log.html?isbn=${isbn}`;
         }
     }

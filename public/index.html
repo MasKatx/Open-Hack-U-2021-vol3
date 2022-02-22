@@ -36,8 +36,8 @@
             <img :src="val.img" class="imgURL" id="resultImg" alt="本の画像">
             {{ val.title }}<br>
             {{ val.author }}<br>
-            <input type="button" value="読む" @click="read">
-            <input type="button" value="記録" @click="bookRecord(val.isbn)">
+            <input type="button" class="btn flex" value="読む" @click="read(val.isbn)">
+            <input type="button" class="btn flex" value="記録" @click="bookRecord(val.isbn)">
             <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
         </div>
         <input type="text" id="isbn" placeholder="ISBNを入力" v-model="isbn">
