@@ -19,9 +19,14 @@ const vm = new Vue({
         myBook: [],
         startTime: 0,
         endTime: 0,
-        elapsedTime: 0,
-        passSecond: 0,
-        countUp: null,
+        tmpTime: 0,
+        tmpStartTime: 0,
+        tmpEndTime: 0,
+        timeCount: null,
+        hh: 0,
+        mm: 0,
+        ss: 0,
+        pause: "一時停止",
     },
     methods: {
         bookSearch: async function () {
@@ -53,6 +58,7 @@ const vm = new Vue({
                         img: item.mediumImageUrl,
                         url: item.affiliateUrl,
                         price: `価格 : ${item.itemPrice}円(税込)`,
+                        isbn: item.isbn,
                     }
                 );
             }
@@ -73,16 +79,19 @@ const vm = new Vue({
             testLog.forEach((postDoc) => {
                 const dic = postDoc.data();
                 this.myBook.push({ title: dic.title, author: dic.author, img: dic.img, url: dic.url, isbn: dic.isbn });
-                console.log(postDoc.id, ' => ', dic);
+                // console.log(postDoc.id, ' => ', dic);
             });
         },
 
-        myBookAdd: async function () {
-            if (this.isbn.length != 13) {
-                alert("13桁のISBNを入力してください");
-                return;
+        myBookAdd: async function (isbn = 0) {
+            if (isbn === 0) {
+                if (this.isbn.length != 13) {
+                    alert("13桁のISBN(バーコードの番号)を入力してください");
+                    return;
+                }
+                isbn = this.isbn;
             }
-            let url = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&isbn=${this.isbn}&applicationId=${fffun()}&affiliateId=245eb4c3.2431bbf0.245eb4c4.d8af5e40`;
+            let url = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&isbn=${isbn}&applicationId=${fffun()}&affiliateId=245eb4c3.2431bbf0.245eb4c4.d8af5e40`;
             const res = await fetch(url);
             const resJson = await res.json();
             this.flg = resJson.Items.length > 0;
@@ -113,8 +122,23 @@ const vm = new Vue({
                     isbn: dic.isbn,
                 });
                 console.log(postDoc.id, ' => ', dic);
-            })
+            });
             this.myBooksGet();
+            $("#addAlert").fadeIn("slow", function(){
+                $(this).delay(3000).fadeOut("slow");
+            });
+        },
+
+        bookDelete: async function (isbn) {
+            if (!window.confirm("削除しますか？")) {
+                return;
+            }
+            const userName = "ishida";
+            await db.doc(`users/user/${userName}/${isbn}`).delete();
+            this.myBooksGet();
+            $("#deleteAlert").fadeIn("slow", function(){
+                $(this).delay(3000).fadeOut("slow");
+            });
         },
 
         read: function (isbn) {
@@ -122,26 +146,37 @@ const vm = new Vue({
         },
 
         timerLoad: function () {
-            this.timerStart();
-            this.passSecond = Math.floor((Date.now() - this.startTime) / 1000);
-            this.countUp = setInterval(() => this.passSecond++, 1000);
+            this.startTime = Date.now();
+            this.timeCount = setInterval(function () {
+                let second = (Date.now() - vm.startTime - vm.tmpTime) / 1000;
+                vm.ss = Math.floor(second % 60);
+                vm.mm = Math.floor(second / 60) % 60;
+                vm.hh = Math.floor(Math.floor(second / 60) / 60) % 60;
+            }, 1000);
         },
 
-        // timerUp: function () {
-        //     this.passSecond++;
-        // },
-
-        timerStart: function () {
-            console.log("start");
-            this.startTime = Date.now();
+        timerPause: function () {
+            if (this.pause === "一時停止") {
+                this.pause = "再開";
+                this.tmpStartTime = Date.now();
+                clearInterval(this.timeCount);
+            } else {
+                this.pause = "一時停止";
+                this.tmpEndTime = Date.now();
+                this.tmpTime += this.tmpEndTime - this.tmpStartTime;
+                this.timeCount = setInterval(function () {
+                    let second = (Date.now() - vm.startTime - vm.tmpTime) / 1000;
+                    vm.ss = Math.floor(second % 60);
+                    vm.mm = Math.floor(second / 60) % 60;
+                    vm.hh = Math.floor(Math.floor(second / 60) / 60) % 60;
+                }, 1000);
+            }
         },
 
         timerEnd: function () {
             this.endTime = Date.now();
-            this.elapsedTime = this.endTime - this.startTime;
-            const second = this.elapsedTime / 1000;
-            clearInterval(this.countUp);
-            console.log(second);
+            clearInterval(this.timeCount);
+            console.log((this.endTime - this.startTime - this.tmpTime) / 1000);
         },
 
         bookRecord: function (isbn) {

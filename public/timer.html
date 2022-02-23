@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>タイマー</title>
+<!-- ここから -->
+    <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="src/jquery-3.6.0.min.js"></script>
+    <script src="src/vue.js"></script>
+<!-- ここまではいじらないで -->
+</head>
+
+<body>
+    <div id="main" v-cloak>
+        <h2>タイマー</h2>
+        <h1>{{ hh }}時間{{ mm }}分{{ ss }}秒</h1>
+        <input type="button" v-model="pause" @click="timerPause">
+        <input type="button" value="終了" @click="timerEnd">
+    </div>
+    <script src="src/main.js"></script>
+</body>
+
+</html>
