@@ -107,6 +107,7 @@ const vm = new Vue({
                 img: item.mediumImageUrl,
                 url: item.affiliateUrl,
                 isbn: item.isbn,
+                readTime: 0,
             };
             const bookIsbn = item.isbn;
             const userName = "ishida";
@@ -120,11 +121,12 @@ const vm = new Vue({
                     img: dic.img,
                     url: dic.url,
                     isbn: dic.isbn,
+                    readTime: dic.readTime,
                 });
                 console.log(postDoc.id, ' => ', dic);
             });
             this.myBooksGet();
-            $("#addAlert").fadeIn("slow", function(){
+            $("#addAlert").fadeIn("slow", function () {
                 $(this).delay(3000).fadeOut("slow");
             });
         },
@@ -136,7 +138,7 @@ const vm = new Vue({
             const userName = "ishida";
             await db.doc(`users/user/${userName}/${isbn}`).delete();
             this.myBooksGet();
-            $("#deleteAlert").fadeIn("slow", function(){
+            $("#deleteAlert").fadeIn("slow", function () {
                 $(this).delay(3000).fadeOut("slow");
             });
         },
@@ -173,14 +175,25 @@ const vm = new Vue({
             }
         },
 
-        timerEnd: function () {
+        timerEnd: async function () {
+            if (this.pause === "再開") {
+                this.tmpTime += Date.now() - this.tmpStartTime;
+            }
             this.endTime = Date.now();
             clearInterval(this.timeCount);
-            console.log((this.endTime - this.startTime - this.tmpTime) / 1000);
+            const time = (this.endTime - this.startTime - this.tmpTime) / 1000;
+
+            const isbn = location.search.split("=")[1];
+            const userName = "ishida";
+            const res = await db.doc(`users/user/${userName}/${isbn}`).get();
+            const resData = res.data();
+            const readTime = time + resData.readTime;
+            await db.doc(`users/user/${userName}/${isbn}`).update({readTime: readTime});
+            history.back();
         },
 
         bookRecord: function (isbn) {
             window.location.href = `http://localhost:5000/reading_log.html?isbn=${isbn}`;
-        }
+        },
     }
 })
