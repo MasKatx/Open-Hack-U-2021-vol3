@@ -28,21 +28,24 @@
     <script src="src/vue.js"></script>
 </head>
 
+
 <body>
     <div id="main" v-cloak>
-        <div id="deleteAlert">削除しました</div>
-        <div id="addAlert">追加しました</div>
+        <!-- <div id="deleteAlert">削除しました</div>
+        <div id="addAlert">追加しました</div> -->
         <h2>ホーム</h2>
         <!-- DBにある所持している本の情報を一覧表示する -->
-        <div class="bookList flex" :id="val.isbn" v-for="val in myBook">
-            <img :src="val.img" class="imgURL" id="resultImg" alt="本の画像">
-            {{ val.title }}<br>
-            {{ val.author }}<br>
-            {{ val.publisher }}
-            <input type="button" class="btn flex" value="読む" @click="read(val.isbn)">
-            <input type="button" class="btn flex" value="記録" @click="bookRecord(val.isbn)">
-            <input type="button" class="btn flex" value="削除" @click="bookDelete(val.isbn)">
-            <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+        <!-- <div class="bookList flex" :id="val.isbn" v-for="val in myBook"> -->
+            <table v-for="val in myBook"> 
+                <td><img :src="val.img" class="imgURL" id="resultImg" alt="本の画像"></td>
+                <td>{{ val.title }}</td>
+                <td>{{ val.author }}</td>
+                <td>{{ val.publisher }}</td>
+                <td><input type="button" class="btn flex" value="読む" @click="read(val.isbn)"></td>
+                <td><input type="button" class="btn flex" value="記録" @click="bookRecord(val.isbn)"></td>
+                <td><input type="button" class="btn flex" value="削除" @click="bookDelete(val.isbn)"></td>
+                <td><a :href="val.url" target="_blank" v-if="flg">楽天リンク</a></td>
+            </table>
         </div>
         <h3>書籍を追加</h3>
         <p>書籍のISBN(バーコードの番号)を入力すると追加できます</p>

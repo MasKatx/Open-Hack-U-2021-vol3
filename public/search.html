@@ -36,13 +36,15 @@
         <input type="button" value="検索" @click="bookSearch">
         <div>
             <div class="result flex" v-for="val in bookSearchResult">
-                    <a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a><br>
-                    {{ val.title }}<br>
-                    {{ val.author }}<br>
-                    {{ val.publisher }}<br>
-                    {{ val.price }}<br>
-                    <input type="button" value="所持書籍に追加" @click="myBookAdd(val.isbn)" v-if="flg">
-                    <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+                <table>
+                    <td><a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a></td>
+                    <td>{{ val.title }}</td>
+                    <td>{{ val.author }}</td>
+                    <td>{{ val.publisher }}</td>
+                    <td>{{ val.price }}</td>
+                    <td><input type="button" value="所持書籍に追加" @click="myBookAdd(val.isbn)" v-if="flg"></td>
+                    <td><a :href="val.url" target="_blank" v-if="flg">楽天リンク</a></td>
+                </table>
             </div>
         </div>
         <a href="index.html">home</a>
