@@ -2,8 +2,10 @@ let db = {};
 document.addEventListener("DOMContentLoaded", async function () {
     db = await firebase.firestore();
     vm.myBooksGet();
-    if (location.pathname == "/timer.html") {
+    if (location.pathname === "/timer.html") {
         vm.timerLoad();
+    } else if (location.pathname === "/reading_log.html") {
+        vm.bookData();
     }
 });
 
@@ -15,6 +17,7 @@ const vm = new Vue({
         author: "",
         publisher: "",
         isbn: "",
+        img: "",
         flg: true,
         myBook: [],
         startTime: 0,
@@ -55,6 +58,7 @@ const vm = new Vue({
                     {
                         title: item.title.replace("　", " "),
                         author: `著者 : ${item.author}`,
+                        publisher: item.publisherName,
                         img: item.mediumImageUrl,
                         url: item.affiliateUrl,
                         price: `価格 : ${item.itemPrice}円(税込)`,
@@ -74,12 +78,11 @@ const vm = new Vue({
             //     img: "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/0542/9784088920542_1_4.jpg?_ex=120x120",
             //     url: "https://books.rakuten.co.jp/rb/16795162/?scid=af_pc_etc&sc2id=af_101_0_0",
             // });
-            const testLog = await db.collection(`users/user/${userName}`).get();
-            // console.log(testLog.docs.map(postDoc => postDoc.id))
-            testLog.forEach((postDoc) => {
+            const res = await db.collection(`users/user/${userName}`).get();
+            // console.log(res.docs.map(postDoc => postDoc.id))
+            res.forEach((postDoc) => {
                 const dic = postDoc.data();
-                this.myBook.push({ title: dic.title, author: dic.author, img: dic.img, url: dic.url, isbn: dic.isbn });
-                // console.log(postDoc.id, ' => ', dic);
+                this.myBook.push({ title: dic.title, author: dic.author, publisher: dic.publisher, img: dic.img, url: dic.url, isbn: dic.isbn });
             });
         },
 
@@ -92,18 +95,19 @@ const vm = new Vue({
                 isbn = this.isbn;
             }
             let url = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&isbn=${isbn}&applicationId=${fffun()}&affiliateId=245eb4c3.2431bbf0.245eb4c4.d8af5e40`;
-            const res = await fetch(url);
-            const resJson = await res.json();
+            const apiRes = await fetch(url);
+            const resJson = await apiRes.json();
             this.flg = resJson.Items.length > 0;
             if (resJson.Items.length == 0) {
                 this.bookSearchResult.push({ title: "見つかりませんでした" });
                 return;
             }
             const item = resJson.Items[0].Item;
-            console.log(item.isbn);
+            // console.log(item.isbn);
             const addData = {
                 title: item.title.replace("　", " "),
                 author: item.author,
+                publisher: item.publisherName,
                 img: item.mediumImageUrl,
                 url: item.affiliateUrl,
                 isbn: item.isbn,
@@ -118,12 +122,13 @@ const vm = new Vue({
                 this.myBook.push({
                     title: dic.title,
                     author: dic.author,
+                    publisher: dic.publisher,
                     img: dic.img,
                     url: dic.url,
                     isbn: dic.isbn,
                     readTime: dic.readTime,
                 });
-                console.log(postDoc.id, ' => ', dic);
+                // console.log(postDoc.id, ' => ', dic);
             });
             this.myBooksGet();
             $("#addAlert").fadeIn("slow", function () {
@@ -187,13 +192,24 @@ const vm = new Vue({
             const userName = "ishida";
             const res = await db.doc(`users/user/${userName}/${isbn}`).get();
             const resData = res.data();
-            const readTime = time + resData.readTime;
-            await db.doc(`users/user/${userName}/${isbn}`).update({readTime: readTime});
+            const readTime = Math.floor((time + resData.readTime) * 10) / 10;
+            await db.doc(`users/user/${userName}/${isbn}`).update({ readTime: readTime });
             history.back();
         },
 
         bookRecord: function (isbn) {
             window.location.href = `http://localhost:5000/reading_log.html?isbn=${isbn}`;
         },
-    }
-})
+
+        bookData: async function () {
+            const isbn = location.search.split("=")[1];
+            const userName = "ishida";
+            const res = await db.doc(`users/user/${userName}/${isbn}`).get();
+            const resData = res.data();
+            this.title = resData.title;
+            this.author = resData.author;
+            this.img = resData.img;
+            this.publisher = resData.publisher;
+        },
+    },
+});
