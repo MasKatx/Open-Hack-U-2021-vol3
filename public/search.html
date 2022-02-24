@@ -39,6 +39,7 @@
                     <a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a><br>
                     {{ val.title }}<br>
                     {{ val.author }}<br>
+                    {{ val.publisher }}<br>
                     {{ val.price }}<br>
                     <input type="button" value="所持書籍に追加" @click="myBookAdd(val.isbn)" v-if="flg">
                     <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
