@@ -15,17 +15,18 @@
 
 .timer h2{
     font-size: 48px;
+    margin-bottom: 30%;
 }
 
-.timer h1{
-    font-size: 70px;
+#time{
+    font-size: 100px;
 }
 
 a.btn {
     color: #fff;
     display: inline-block;
     padding: 5px 20px;
-    margin: 20px 10px;
+    margin-top: 30%;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
     text-align: center;
