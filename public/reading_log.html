@@ -5,12 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>読書記録</title>
-    <link rel="stylesheet" href="test.css">
-    <link rel="stylesheet" href="test2.css">
     <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
     <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/reading_log.css">
     <script src="src/jquery-3.6.0.min.js"></script>
     <script src="src/vue.js"></script>
 </head>
@@ -29,7 +28,7 @@
             <div id="updateAlert">更新しました</div>
             <h1 id="pageTitle">書籍情報・読書記録</h1>
             <h3>{{ title }}</h3>
-            <!-- <img :src="bigImg"> -->
+            <img :src="bigImg" height="200px" width="141px">
             <p>著者 : {{ author }}</p>
             <p>出版社 : {{ publisher }}</p>
             <p>今まで読んだ時間 : <span v-if="hh > 0">{{ hh }}時間</span><span v-if="mm > 0 || hh > 0">{{ mm }}分</span>{{ ss }}秒</p>
@@ -37,9 +36,11 @@
             <h3 class="subTitle">Public review</h3>
             <textarea name="public" id="publicReview" cols="50" rows="10" v-model="public"></textarea>
             <h3 class="subTitle">Private review</h3>
-            <textarea name="private" id="privateReview" cols="50" rows="10" v-model="private"></textarea><br>
-            <input type="button" id="back" class="btn" value="戻る" onclick="history.back()">
-            <input type="button" id="update" class="btn" value="更新" @click="bookDataUpdate">
+            <textarea name="private" id="privateReview" cols="50" rows="10" v-model="private"></textarea>
+            <div class="Btn">
+                <button id="back" class="btnLeft" onclick="history.back()">戻る</button>
+                <button id="update" class="btnRight" @click="bookDataUpdate">更新</button>
+            </div>
         </div>
         <footer id="footer">
             <small>&copy; copyright.<br>Built with Firebase</small>

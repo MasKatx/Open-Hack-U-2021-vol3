@@ -1,0 +1,108 @@
+@charset "UTF-8";
+
+button {
+    border: 2px solid #000;
+    border-radius: 0;
+    color: #fff;
+    background: #000;
+    font-weight: 700;
+    padding: 5px;
+}
+
+.contents-wrap {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 7rem;
+}
+
+.contents-wrap {
+    width: 80%;
+    margin: 1%;
+    flex-direction: row;
+}
+
+.contents-text {
+    text-align: left;
+	width: 60%; /*flex: 2;*/
+}
+.contents-img {
+	/* width: 35%; flex: 1; */
+	width: 30%; /*flex: 1;*/
+    margin-bottom: 10px;
+}
+
+.contents-img img {
+    vertical-align: sub;
+	/* display: block;  */
+	width: 40%;
+	height: auto;
+}
+
+.contents-text p {
+    margin-bottom: 0;
+}
+
+.btnLeft {
+    display: block;
+    padding: 5px;
+    margin: 5px 5px 5px auto;
+    font-size: 12px;
+}
+
+.btn{
+    display: block;
+    padding: 5px;
+    margin: 5px;
+    font-size: 12px;
+}
+
+.Btn{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.link{
+    display: block;
+    margin: 10px;
+}
+
+
+.cp_iptxt {
+    font: 15px/24px sans-serif;
+    box-sizing: border-box;
+    padding: 0.3em;
+    margin: auto;
+    transition: 0.3s;
+    letter-spacing: 1px;
+    color: #aaaaaa;
+    border: none;
+    border-bottom: 2px solid #1b2538;
+    background: transparent;
+    position: relative;
+    width: 30%;
+}
+
+.ef input[type='text']:focus {
+    border-bottom: 2px solid #da3c41;
+    outline: none;
+}
+
+@media screen and (max-width: 768px){
+	.contents-wrap,
+	.contents-wrap:nth-child(odd)  {
+		flex-direction: column;
+	}
+
+	.contents-text,
+	.contents-img {
+		width: 100%; /*flex: 1;*/
+	}
+
+	.contents-text {
+		padding: 3rem;
+	}
+
+	.contents-text h2 {
+		text-align: center;
+	}
+}
