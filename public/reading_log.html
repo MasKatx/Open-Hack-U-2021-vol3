@@ -29,15 +29,14 @@
             <h1 id="pageTitle">書籍情報・読書記録</h1>
             <h3 class="subTitle">{{ title }}</h3>
             <div class="contents-wrap">
-                <!-- <div class="contents-img"><img :src="bigImg" height="200px" width="141px"></div> -->
-                <div class="contents-img"><img src="img/MicrosoftTeams-image.png" height="200px" width="141px"></div>
+                <div class="contents-img"><img :src="bigImg" height="200px" width="141px"></div>
                 <div class="contents-text warps">
                     <p>
                         {{ author }}<br>
                         {{ publisher }}<br><br>
                         今まで読んだ時間 : <span v-if="hh > 0">{{ hh }}時間</span><span v-if="mm > 0 || hh > 0">{{ mm }}分</span>{{ ss }}秒<br>
                         最後に読んだ日 : {{ lastReadDate }}<br><br>
-                        <a :href="url" target="_blank">楽天リンク</a>
+                        <a :href="url" target="_blank" class="link">楽天リンク</a>
                     </p>
                 </div>
             </div>
