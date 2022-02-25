@@ -61,7 +61,7 @@ const vm = new Vue({
                     {
                         title: item.title.replace("　", " "),
                         author: `著者 : ${item.author}`,
-                        publisher: `出版社 : ${item.publisherName}`,
+                        publisher: `出版社 : ${item.publisherName != "" ? item.publisherName : "データがありません"}`,
                         img: item.mediumImageUrl.split("?")[0],
                         url: item.affiliateUrl,
                         price: `価格 : ${item.itemPrice}円(税込)`,
@@ -80,7 +80,7 @@ const vm = new Vue({
                 vm.myBook.push({
                     title: dic.title,
                     author: `著者 : ${dic.author}`,
-                    publisher: `出版社 : ${dic.publisher}`,
+                    publisher: `出版社 : ${dic.publisher != "" ? dic.publisher : "データがありません"}`,
                     img: dic.img,
                     url: dic.url,
                     isbn: dic.isbn,
@@ -123,6 +123,12 @@ const vm = new Vue({
             };
             const bookIsbn = item.isbn;
             const userName = "ishida";
+            const checkLog = await db.doc(`users/user/${userName}/${isbn}`).get();
+            console.log(checkLog);
+            if (checkLog.data() != undefined) {
+                alert("すでに追加されています");
+                return;
+            }
             await db.doc(`users/user/${userName}/${bookIsbn}`).set(addData);
             const testLog = await db.collection(`users/user/${userName}`).get();
             testLog.forEach((postDoc) => {
