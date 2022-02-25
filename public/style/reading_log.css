@@ -9,6 +9,36 @@ button {
     padding: 5px;
 }
 
+p{
+    margin: 1%;
+}
+
+.contents-wrap {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 7rem;
+}
+
+.contents-wrap {
+    width: 80%;
+    margin: 0 auto;
+    flex-direction: row;
+}
+
+.contents-text {
+    text-align: left;
+	width: 50%; /*flex: 2;*/
+}
+.contents-img {
+    text-align: right;
+	width: 40%; /*flex: 1;*/
+    margin: 0 5%;
+}
+
+.contents-text p {
+    margin-bottom: 0;
+}
+
 textarea{
     padding: 1%;
     border-radius:10px;
