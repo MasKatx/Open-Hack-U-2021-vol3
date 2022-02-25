@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     vm.myBooksGet();
     if (location.pathname === "/timer.html") {
         vm.timerLoad();
-    } else if (location.pathname === "/reading_log.html" || location.pathname === "/test.html") {
+    } else if (location.pathname === "/reading_log.html") {
         vm.bookData();
     }
 });
@@ -44,7 +44,6 @@ const vm = new Vue({
             url += vm.title != "" ? `&title=${vm.title}` : "";
             url += vm.author != "" ? `&author=${vm.author}` : "";
             url += vm.publisher != "" ? `&publisherName=${vm.publisher}` : "";
-            // url += vm.isbn != "" ? `&isbn=${vm.isbn}` : "";
             if (url === urlTmp) {
                 alert("入力してください");
                 return;
@@ -75,15 +74,7 @@ const vm = new Vue({
         myBooksGet: async function () {
             vm.myBook = [];
             const userName = "ishida";
-            // users(c) -> user(d) -> ishida(c) -> book(d)
-            // await db.doc(`users/user/${userName}/${bookIsbn}`).set({
-            //     title: "this is title",
-            //     author: "mr.k",
-            //     img: "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/0542/9784088920542_1_4.jpg?_ex=120x120",
-            //     url: "https://books.rakuten.co.jp/rb/16795162/?scid=af_pc_etc&sc2id=af_101_0_0",
-            // });
             const res = await db.collection(`users/user/${userName}`).get();
-            // console.log(res.docs.map(postDoc => postDoc.id))
             res.forEach((postDoc) => {
                 const dic = postDoc.data();
                 vm.myBook.push({
@@ -117,7 +108,6 @@ const vm = new Vue({
                 return;
             }
             const item = resJson.Items[0].Item;
-            // console.log(item.isbn);
             const addData = {
                 title: item.title.replace("　", " "),
                 author: item.author,
@@ -146,7 +136,6 @@ const vm = new Vue({
                     readTime: dic.readTime,
                     lastReadDate: dic.lastReadDate,
                 });
-                // console.log(postDoc.id, ' => ', dic);
             });
             vm.myBooksGet();
             $("#addAlert").fadeIn("slow", function () {
@@ -167,7 +156,7 @@ const vm = new Vue({
         },
 
         read: function (isbn) {
-            window.location.href = `http://localhost:5000/timer.html?isbn=${isbn}`;
+            window.location.href = `https://open-hack-u-2021.web.app/timer.html?isbn=${isbn}`;
         },
 
         timerLoad: function () {
@@ -191,9 +180,9 @@ const vm = new Vue({
                 vm.tmpTime += vm.tmpEndTime - vm.tmpStartTime;
                 vm.timeCount = setInterval(function () {
                     let second = (Date.now() - vm.startTime - vm.tmpTime) / 1000;
-                    vm.ss = Math.floor(second % 60);
-                    vm.mm = Math.floor(second / 60) % 60;
-                    vm.hh = Math.floor(Math.floor(second / 60) / 60) % 60;
+                    vm.ss = String(Math.floor(second % 60)).padStart(2, "0");
+                    vm.mm = String(Math.floor(second / 60) % 60).padStart(2, "0");
+                    vm.hh = String(Math.floor(Math.floor(second / 60) / 60) % 60).padStart(2, "0");
                 }, 1000);
             }
         },
@@ -219,7 +208,7 @@ const vm = new Vue({
         },
 
         bookRecord: function (isbn) {
-            window.location.href = `http://localhost:5000/reading_log.html?isbn=${isbn}`;
+            window.location.href = `https://open-hack-u-2021.web.app/reading_log.html?isbn=${isbn}`;
         },
 
         bookData: async function () {
