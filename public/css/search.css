@@ -1,0 +1,314 @@
+@charset "UTF-8";
+
+.cp_iptxt {
+  position: relative;
+  width: 50%;
+  margin: auto;
+  /* width: 80%;
+        margin: 40px 3%; */
+}
+
+.cp_iptxt input[type='text'] {
+  font: 15px/24px sans-serif;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.3em;
+  transition: 0.3s;
+  letter-spacing: 1px;
+  color: #aaaaaa;
+  border: none;
+  border-bottom: 2px solid #1b2538;
+  background: transparent;
+}
+
+.ef input[type='text']:focus {
+  border-bottom: 2px solid #da3c41;
+  outline: none;
+}
+
+.cp_ipselect {
+  position: relative;
+  width: 50%;
+  margin: auto;
+  /* width: 90%;
+        margin: 2em auto; */
+  text-align: center;
+}
+
+.cp_sl06 {
+  position: relative;
+  font-family: inherit;
+  background-color: transparent;
+  width: 100%;
+  padding: 10px 10px 10px 0;
+  font-size: 18px;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.cp_sl06:focus {
+  outline: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+}
+
+.cp_ipselect .cp_sl06 {
+  appearance: none;
+  -webkit-appearance: none
+}
+
+.cp_ipselect select::-ms-expand {
+  display: none;
+}
+
+.cp_ipselect:after {
+  position: absolute;
+  top: 18px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  padding: 0;
+  content: '';
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+/* .cp_sl06_selectlabel {
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 18px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 0;
+        top: 10px;
+        transition: 0.2s ease all;
+    } */
+.cp_sl06:focus~.cp_sl06_selectlabel,
+.cp_sl06:valid~.cp_sl06_selectlabel {
+  color: #da3c41;
+  top: -20px;
+  transition: 0.2s ease all;
+  font-size: 14px;
+}
+
+.cp_sl06_selectbar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.cp_sl06_selectbar:before,
+.cp_sl06_selectbar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #da3c41;
+  transition: 0.2s ease all;
+}
+
+.cp_sl06_selectbar:before {
+  left: 50%;
+}
+
+.cp_sl06_selectbar:after {
+  right: 50%;
+}
+
+.cp_sl06:focus~.cp_sl06_selectbar:before,
+.cp_sl06:focus~.cp_sl06_selectbar:after {
+  width: 50%;
+}
+
+.cp_sl06_highlight {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* .btn,
+a.btn,
+button.btn */
+button {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  display: inline-block;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  color: #212529;
+  border-radius: 0.5rem;
+}
+
+
+/* 検索ボタン */
+button {
+  border: 2px solid #000;
+  border-radius: 0;
+  background: #fff;
+}
+button {
+  color: #fff;
+  background: #000;
+}
+
+
+/* ===== Select Box ===== */
+.sel {
+  font-size: 1rem;
+  display: inline-block;
+  margin: 3em 2em;
+  width: 350px;
+  background-color: transparent;
+  position: relative;
+  cursor: pointer;
+  color: #aaaaaa;
+}
+
+/* .sel::before {
+  position: absolute;
+  content: '\f063';
+  font-family: 'FontAwesome';
+  font-size: 2em;
+  color: #FFF;
+  right: 20px;
+  top: calc(50% - 0.5em);
+} */
+
+/* .sel.active::before {
+  transform: rotateX(-180deg);
+}
+
+.sel__placeholder {
+  display: block;
+  font-family: 'Quicksand';
+  font-size: 2.3em;
+  color: #838e95;
+  padding: 0.2em 0.5em;
+  text-align: left;
+  pointer-events: none;
+  user-select: none;
+  visibility: visible;
+}
+
+.sel.active .sel__placeholder {
+  visibility: hidden;
+}
+
+.sel__placeholder::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.2em 0.5em;
+  content: attr(data-placeholder);
+  visibility: hidden;
+}
+
+.sel.active .sel__placeholder::before {
+  visibility: visible;
+}
+
+.sel__box {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: -4px;
+  display: none;
+  list-style-type: none;
+  text-align: left;
+  font-size: 1em;
+  background-color: #FFF;
+  width: calc(100% + 8px);
+  box-sizing: border-box;
+}
+
+.sel.active .sel__box {
+  display: block;
+  animation: fadeInUp 500ms;
+}
+
+.sel__box__options {
+  display: list-item;
+  font-family: 'Quicksand';
+  font-size: 1.5em;
+  color: #838e95;
+  padding: 0.5em 1em;
+  user-select: none;
+}
+
+.sel__box__options::after {
+  content: '\f00c';
+  font-family: 'FontAwesome';
+  font-size: 0.5em;
+  margin-left: 5px;
+  display: none;
+}
+
+.sel__box__options.selected::after {
+  display: inline;
+}
+
+.sel__box__options:hover {
+  background-color: #ebedef;
+} */
+
+/* ----- Select Box Black Panther ----- */
+.sel {
+  /* border-bottom: 4px solid rgba(0, 0, 0, 0.3); */
+  border-bottom: 2px solid #1b2538;;
+}
+
+/* .sel--black-panther {
+  z-index: 3;
+} */
+
+/* ----- Select Box Superman ----- */
+.sel--superman {
+/*   display: none; */
+  z-index: 2;
+}
+
+/* ===== Keyframes ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+select#sort {
+  width: 100%;
+  outline: none;
+}

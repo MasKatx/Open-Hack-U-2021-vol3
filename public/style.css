@@ -1,33 +1,48 @@
 @charset "UTF-8";
 
+/* * {
+    padding: 0;
+    margin: 0;
+  }
+  
+  html {
+    font-size: 16px;
+  }
+  
+  body {
+      padding: 100px 20px;
+      text-align: center;
+    } */
+    
 body{
-    width: auto;
-    margin: auto;
-    text-align: center;
+  background: #eeebe7;
+  width: auto;
+  margin: auto;
+  text-align: center;
 }
 
 .flex{
-    display: flex;
+  display: flex;
 }
 
 .flex a{
-    margin: auto 30px 0 auto;
+  margin: auto 30px 0 auto;
 }
 
 .flex img{
-    margin: 10px;
+  margin: 10px;
 }
 
 #imgURL{
-    margin: 0;
-    text-align: left;
+  margin: 0;
+  text-align: left;
 }
 
 [v-cloak] {
-    display: none;
+  display: none;
 }
 
 .result{
-    text-align: left;
-    margin: 10px;
+  text-align: left;
+  margin: 10px;
 }

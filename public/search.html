@@ -2,49 +2,79 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>書籍検索</title>
-<!-- ここから -->
-    <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
-    <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-    <link rel="stylesheet" href="style.css">
-    <script src="src/jquery-3.6.0.min.js"></script>
-    <script src="src/vue.js"></script>
-<!-- ここまではいじらないで -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>書籍検索</title>
+  <!-- ここから -->
+  <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
+  <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
+  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="src/jquery-3.6.0.min.js"></script>
+  <script src="src/vue.js"></script>
+  <!-- ここまではいじらないで -->
+
+  <!--==============レイアウトを制御する独自のCSSを読み込み===============-->
+  <link rel="stylesheet" type="text/css"
+    href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/reset.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/7-1-11/css/7-1-11.css">
+    <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="css/search.css">
 </head>
 
 <body>
-    <div id="main" v-cloak>
-        <h2>書籍検索</h2>
-        <input type="text" v-model="title" id="title" placeholder="タイトル"><br>
-        <input type="text" v-model="author" id="author" placeholder="著者名"><br>
-        <input type="text" v-model="publisher" id="publisherName" placeholder="出版社"><br>
-        <!-- <input type="text" v-model="isbn" id="isbn" placeholder="ISBN"><br> -->
-        <select name="sortSelect" id="sort">
-            <option value="standard">並び替え</option>
-            <option value="sales">売れている</option>
-            <option value="%2BreleaseDate">発売日(古い)</option>
-            <option value="-releaseDate">発売日(新しい)</option>
-            <option value="%2BitemPrice">価格が安い</option>
-            <option value="-itemPrice">価格が高い</option>
-            <option value="reviewCount">レビューが多い</option>
-            <option value="reviewAverage">評価が高い</option>
-        </select>
-        <input type="button" value="検索" @click="bookSearch">
-        <div>
-            <div class="result flex" v-for="val in bookSearchResult">
-                    <a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a><br>
-                    {{ val.title }}<br>
-                    {{ val.author }}<br>
-                    {{ val.price }}<br>
-                    <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
-            </div>
-        </div>
+  <div id="main" v-cloak>
+    <h2>書籍検索</h2>
+    <div class="cp_iptxt">
+      <label class="ef">
+        <input type="text" v-model="title" id="title" placeholder="タイトル">
+        <input type="text" v-model="author" id="author" placeholder="著者名">
+        <input type="text" v-model="publisher" id="publisherName" placeholder="出版社">
+      </label>
     </div>
-    <script src="src/main.js"></script>
-    <script src="src/sub.js"></script>
+
+    <!-- <div class="cp_ipselect"> -->
+      <!-- <select class="cp_sl06" required> -->
+        <!-- <option value="standard" hidden disabled selected>並び替え</option> -->
+
+        <!-- <div class="cp_iptxt"> -->
+        <!-- <select class="cp_sl06" name="sortselect" id="sort"> -->
+      <div class="sel sel--black-panther">
+        <!-- <select name="select-profession" id="select-profession"> -->
+        <select name="select-profession" name="sortselect" id="sort">
+          <!-- <option value="" disabled>並び替え</option> -->
+          <option hidden>並び替え</option>
+          <option value="standard">標準</option>
+          <option value="sales">売れている</option>
+          <option value="%2BreleaseDate">発売日(古い)</option>
+          <option value="-releaseDate">発売日(新しい)</option>
+          <option value="%2BitemPrice">価格が安い</option>
+          <option value="-itemPrice">価格が高い</option>
+          <option value="reviewCount">レビューが多い</option>
+          <option value="reviewAverage">評価が高い</option>
+      </select>
+      <span class="cp_sl06_highlight"></span>
+      <span class="cp_sl06_selectbar"></span>
+      <!-- <label class="cp_sl06_selectlabel">Choose</label> -->
+    </div>
+
+    <!-- <input type="button" value="検索" @click="bookSearch"> -->
+    <button @click="bookSearch">検索</button>
+    <!-- <a class="btn btn-border" @click>検索</a> -->
+    <div>
+      <div class="result flex" v-for="val in bookSearchResult">
+        <a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a><br>
+        {{ val.title }}<br>
+        {{ val.author }}<br>
+        {{ val.price }}<br>
+        <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="src/main.js"></script>
+  <script src="src/sub.js"></script>
 </body>
 
 </html>
