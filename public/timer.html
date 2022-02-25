@@ -15,12 +15,12 @@
 <!-- ここまではいじらないで -->
 </head>
 
-<body>
+<body class="timer">
     <div id="main" v-cloak>
         <h2>タイマー</h2>
-        <h1>{{ hh }}時間{{ mm }}分{{ ss }}秒</h1>
-        <input type="button" v-model="pause" @click="timerPause">
-        <input type="button" value="終了" @click="timerEnd">
+        <h1>{{ hh }}:{{ mm }}:{{ ss }}</h1>
+        <a href="javascript:void(0);" class="btn btn-border" @click="timerPause">{{ pause }}</a>
+        <a href="javascript:void(0);" class="btn btn-border" @click="timerEnd">終了</a>
     </div>
     <script src="src/main.js"></script>
 </body>

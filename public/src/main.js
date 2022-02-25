@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     vm.myBooksGet();
     if (location.pathname === "/timer.html") {
         vm.timerLoad();
-    } else if (location.pathname === "/reading_log.html") {
+    } else if (location.pathname === "/reading_log.html" || location.pathname === "/test.html") {
         vm.bookData();
     }
 });
@@ -18,6 +18,10 @@ const vm = new Vue({
         publisher: "",
         isbn: "",
         img: "",
+        bigImg: "",
+        public: "",
+        private: "",
+        lastReadDate: "None",
         flg: true,
         myBook: [],
         startTime: 0,
@@ -26,35 +30,35 @@ const vm = new Vue({
         tmpStartTime: 0,
         tmpEndTime: 0,
         timeCount: null,
-        hh: 0,
-        mm: 0,
-        ss: 0,
+        hh: "00",
+        mm: "00",
+        ss: "00",
         pause: "一時停止",
     },
     methods: {
         bookSearch: async function () {
-            this.bookSearchResult = [];
+            vm.bookSearchResult = [];
             const sort = $("option:selected").val();
             let url = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=${sort}&applicationId=${fffun()}&affiliateId=245eb4c3.2431bbf0.245eb4c4.d8af5e40`;
             const urlTmp = url;
-            url += this.title != "" ? `&title=${this.title}` : "";
-            url += this.author != "" ? `&author=${this.author}` : "";
-            url += this.publisher != "" ? `&publisherName=${this.publisher}` : "";
-            // url += this.isbn != "" ? `&isbn=${this.isbn}` : "";
+            url += vm.title != "" ? `&title=${vm.title}` : "";
+            url += vm.author != "" ? `&author=${vm.author}` : "";
+            url += vm.publisher != "" ? `&publisherName=${vm.publisher}` : "";
+            // url += vm.isbn != "" ? `&isbn=${vm.isbn}` : "";
             if (url === urlTmp) {
                 alert("入力してください");
                 return;
             }
             const res = await fetch(url);
             const resJson = await res.json();
-            this.flg = resJson.Items.length > 0;
-            if (resJson.Items.length == 0) {
-                this.bookSearchResult.push({ title: "見つかりませんでした" });
+            vm.flg = resJson.Items.length > 0;
+            if (resJson.Items.length === 0) {
+                vm.bookSearchResult.push({ title: "見つかりませんでした" });
                 return;
             }
             for (let i = 0; i < resJson.Items.length; i++) {
                 let item = resJson.Items[i].Item;
-                this.bookSearchResult.push(
+                vm.bookSearchResult.push(
                     {
                         title: item.title.replace("　", " "),
                         author: `著者 : ${item.author}`,
@@ -69,7 +73,7 @@ const vm = new Vue({
         },
 
         myBooksGet: async function () {
-            this.myBook = [];
+            vm.myBook = [];
             const userName = "ishida";
             // users(c) -> user(d) -> ishida(c) -> book(d)
             // await db.doc(`users/user/${userName}/${bookIsbn}`).set({
@@ -82,24 +86,34 @@ const vm = new Vue({
             // console.log(res.docs.map(postDoc => postDoc.id))
             res.forEach((postDoc) => {
                 const dic = postDoc.data();
-                this.myBook.push({ title: dic.title, author: dic.author, publisher: dic.publisher, img: dic.img, url: dic.url, isbn: dic.isbn });
+                vm.myBook.push({
+                    title: dic.title,
+                    author: dic.author,
+                    publisher: dic.publisher,
+                    img: dic.img, url: dic.url,
+                    isbn: dic.isbn,
+                });
             });
         },
 
         myBookAdd: async function (isbn = 0) {
             if (isbn === 0) {
-                if (this.isbn.length != 13) {
+                if (vm.isbn.length != 13) {
                     alert("13桁のISBN(バーコードの番号)を入力してください");
                     return;
                 }
-                isbn = this.isbn;
+                isbn = vm.isbn;
             }
             let url = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&isbn=${isbn}&applicationId=${fffun()}&affiliateId=245eb4c3.2431bbf0.245eb4c4.d8af5e40`;
             const apiRes = await fetch(url);
             const resJson = await apiRes.json();
-            this.flg = resJson.Items.length > 0;
-            if (resJson.Items.length == 0) {
-                this.bookSearchResult.push({ title: "見つかりませんでした" });
+            if (resJson.Items.length === 0) {
+                if (location.pathname === "/index.html") {
+                    alert("見つかりませんでした");
+                    return;
+                }
+                vm.flg = resJson.Items.length > 0;
+                vm.bookSearchResult.push({ title: "見つかりませんでした" });
                 return;
             }
             const item = resJson.Items[0].Item;
@@ -112,6 +126,9 @@ const vm = new Vue({
                 url: item.affiliateUrl,
                 isbn: item.isbn,
                 readTime: 0,
+                publicReview: "",
+                privateReview: "",
+                lastReadDate: "None",
             };
             const bookIsbn = item.isbn;
             const userName = "ishida";
@@ -119,7 +136,7 @@ const vm = new Vue({
             const testLog = await db.collection(`users/user/${userName}`).get();
             testLog.forEach((postDoc) => {
                 const dic = postDoc.data();
-                this.myBook.push({
+                vm.myBook.push({
                     title: dic.title,
                     author: dic.author,
                     publisher: dic.publisher,
@@ -127,10 +144,11 @@ const vm = new Vue({
                     url: dic.url,
                     isbn: dic.isbn,
                     readTime: dic.readTime,
+                    lastReadDate: dic.lastReadDate,
                 });
                 // console.log(postDoc.id, ' => ', dic);
             });
-            this.myBooksGet();
+            vm.myBooksGet();
             $("#addAlert").fadeIn("slow", function () {
                 $(this).delay(3000).fadeOut("slow");
             });
@@ -142,7 +160,7 @@ const vm = new Vue({
             }
             const userName = "ishida";
             await db.doc(`users/user/${userName}/${isbn}`).delete();
-            this.myBooksGet();
+            vm.myBooksGet();
             $("#deleteAlert").fadeIn("slow", function () {
                 $(this).delay(3000).fadeOut("slow");
             });
@@ -153,25 +171,25 @@ const vm = new Vue({
         },
 
         timerLoad: function () {
-            this.startTime = Date.now();
-            this.timeCount = setInterval(function () {
+            vm.startTime = Date.now();
+            vm.timeCount = setInterval(function () {
                 let second = (Date.now() - vm.startTime - vm.tmpTime) / 1000;
-                vm.ss = Math.floor(second % 60);
-                vm.mm = Math.floor(second / 60) % 60;
-                vm.hh = Math.floor(Math.floor(second / 60) / 60) % 60;
+                vm.ss = String(Math.floor(second % 60)).padStart(2, "0");
+                vm.mm = String(Math.floor(second / 60) % 60).padStart(2, "0");
+                vm.hh = String(Math.floor(Math.floor(second / 60) / 60) % 60).padStart(2, "0");
             }, 1000);
         },
 
         timerPause: function () {
-            if (this.pause === "一時停止") {
-                this.pause = "再開";
-                this.tmpStartTime = Date.now();
-                clearInterval(this.timeCount);
+            if (vm.pause === "一時停止") {
+                vm.pause = "再開";
+                vm.tmpStartTime = Date.now();
+                clearInterval(vm.timeCount);
             } else {
-                this.pause = "一時停止";
-                this.tmpEndTime = Date.now();
-                this.tmpTime += this.tmpEndTime - this.tmpStartTime;
-                this.timeCount = setInterval(function () {
+                vm.pause = "一時停止";
+                vm.tmpEndTime = Date.now();
+                vm.tmpTime += vm.tmpEndTime - vm.tmpStartTime;
+                vm.timeCount = setInterval(function () {
                     let second = (Date.now() - vm.startTime - vm.tmpTime) / 1000;
                     vm.ss = Math.floor(second % 60);
                     vm.mm = Math.floor(second / 60) % 60;
@@ -181,19 +199,22 @@ const vm = new Vue({
         },
 
         timerEnd: async function () {
-            if (this.pause === "再開") {
-                this.tmpTime += Date.now() - this.tmpStartTime;
+            if (vm.pause === "再開") {
+                vm.tmpTime += Date.now() - vm.tmpStartTime;
             }
-            this.endTime = Date.now();
-            clearInterval(this.timeCount);
-            const time = (this.endTime - this.startTime - this.tmpTime) / 1000;
+            vm.endTime = Date.now();
+            clearInterval(vm.timeCount);
+            const time = (vm.endTime - vm.startTime - vm.tmpTime) / 1000;
 
             const isbn = location.search.split("=")[1];
             const userName = "ishida";
             const res = await db.doc(`users/user/${userName}/${isbn}`).get();
             const resData = res.data();
             const readTime = Math.floor((time + resData.readTime) * 10) / 10;
-            await db.doc(`users/user/${userName}/${isbn}`).update({ readTime: readTime });
+            await db.doc(`users/user/${userName}/${isbn}`).update({
+                readTime: readTime,
+                lastReadDate: new Date().toLocaleString("ja"),
+            });
             history.back();
         },
 
@@ -206,10 +227,31 @@ const vm = new Vue({
             const userName = "ishida";
             const res = await db.doc(`users/user/${userName}/${isbn}`).get();
             const resData = res.data();
-            this.title = resData.title;
-            this.author = resData.author;
-            this.img = resData.img;
-            this.publisher = resData.publisher;
+            vm.title = resData.title;
+            vm.author = resData.author;
+            vm.bigImg = (resData.img.split("=")[0]) + ("=200x200");
+            vm.publisher = resData.publisher;
+            vm.public = resData.publicReview;
+            vm.private = resData.privateReview;
+            vm.lastReadDate = resData.lastReadDate;
+            vm.hh = Math.floor(Math.floor(resData.readTime / 60) / 60) % 60;
+            vm.mm = Math.floor(resData.readTime / 60) % 60;
+            vm.ss = Math.floor(resData.readTime % 60);
+        },
+
+        bookDataUpdate: async function () {
+            const isbn = location.search.split("=")[1];
+            const userName = "ishida";
+            const res = await db.doc(`users/user/${userName}/${isbn}`).get();
+            const resData = res.data();
+            const updateData = {
+                publicReview: vm.public,
+                privateReview: vm.private,
+            };
+            await db.doc(`users/user/${userName}/${isbn}`).update(updateData);
+            $("#updateAlert").fadeIn("slow", function () {
+                $(this).delay(3000).fadeOut("slow");
+            });
         },
     },
 });
