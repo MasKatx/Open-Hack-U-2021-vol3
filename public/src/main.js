@@ -51,10 +51,9 @@ const vm = new Vue({
             const sort = $("option:selected").val();
             let url = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=${sort}&applicationId=1088025467655525347&affiliateId=245eb4c3.2431bbf0.245eb4c4.d8af5e40`;
             const urlTmp = url;
-            url += this.title != "" ? `&title=${this.title}` : "";
-            url += this.author != "" ? `&author=${this.author}` : "";
-            url += this.publisher != "" ? `&publisherName=${this.publisher}` : "";
-            // url += this.isbn != "" ? `&isbn=${this.isbn}` : "";
+            url += vm.title != "" ? `&title=${vm.title}` : "";
+            url += vm.author != "" ? `&author=${vm.author}` : "";
+            url += vm.publisher != "" ? `&publisherName=${vm.publisher}` : "";
             if (url === urlTmp) {
                 alert("入力してください");
                 return;
@@ -72,8 +71,8 @@ const vm = new Vue({
                     {
                         title: item.title.replace("　", " "),
                         author: `著者 : ${item.author}`,
-                        publisher: item.publisherName,
-                        img: item.mediumImageUrl,
+                        publisher: `出版社 : ${item.publisherName}`,
+                        img: item.mediumImageUrl.split("?")[0],
                         url: item.affiliateUrl,
                         price: `価格 : ${item.itemPrice}円(税込)`,
                         isbn: item.isbn,
@@ -85,18 +84,17 @@ const vm = new Vue({
             return;
             this.myBook = [];
             const userName = "ishida";
-            // users(c) -> user(d) -> ishida(c) -> book(d)
-            // await db.doc(`users/user/${userName}/${bookIsbn}`).set({
-            //     title: "this is title",
-            //     author: "mr.k",
-            //     img: "https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/0542/9784088920542_1_4.jpg?_ex=120x120",
-            //     url: "https://books.rakuten.co.jp/rb/16795162/?scid=af_pc_etc&sc2id=af_101_0_0",
-            // });
             const res = await db.collection(`users/user/${userName}`).get();
-            // console.log(res.docs.map(postDoc => postDoc.id))
             res.forEach((postDoc) => {
                 const dic = postDoc.data();
-                this.myBook.push({ title: dic.title, author: dic.author, publisher: dic.publisher, img: dic.img, url: dic.url, isbn: dic.isbn });
+                vm.myBook.push({
+                    title: dic.title,
+                    author: `著者 : ${dic.author}`,
+                    publisher: `出版社 : ${dic.publisher}`,
+                    img: dic.img,
+                    url: dic.url,
+                    isbn: dic.isbn,
+                });
             });
         },
         myBookAdd: async function (isbn = 0) {
@@ -117,12 +115,11 @@ const vm = new Vue({
                 return;
             }
             const item = resJson.Items[0].Item;
-            // console.log(item.isbn);
             const addData = {
                 title: item.title.replace("　", " "),
                 author: item.author,
                 publisher: item.publisherName,
-                img: item.mediumImageUrl,
+                img: item.mediumImageUrl.split("?")[0],
                 url: item.affiliateUrl,
                 isbn: item.isbn,
                 readTime: 0,
@@ -142,7 +139,6 @@ const vm = new Vue({
                     isbn: dic.isbn,
                     readTime: dic.readTime,
                 });
-                // console.log(postDoc.id, ' => ', dic);
             });
             this.myBooksGet();
             $("#addAlert").fadeIn("slow", function () {
@@ -162,8 +158,7 @@ const vm = new Vue({
             });
         },
         read: function (isbn) {
-            return;
-            window.location.href = `http://localhost:5000/timer.html?isbn=${isbn}`;
+            window.location.href = `https://open-hack-u-2021.web.app/timer.html?isbn=${isbn}`;
         },
         timerLoad: function () {
             this.startTime = Date.now();
@@ -185,9 +180,9 @@ const vm = new Vue({
                 this.tmpTime += this.tmpEndTime - this.tmpStartTime;
                 this.timeCount = setInterval(function () {
                     let second = (Date.now() - vm.startTime - vm.tmpTime) / 1000;
-                    vm.ss = Math.floor(second % 60);
-                    vm.mm = Math.floor(second / 60) % 60;
-                    vm.hh = Math.floor(Math.floor(second / 60) / 60) % 60;
+                    vm.ss = String(Math.floor(second % 60)).padStart(2, "0");
+                    vm.mm = String(Math.floor(second / 60) % 60).padStart(2, "0");
+                    vm.hh = String(Math.floor(Math.floor(second / 60) / 60) % 60).padStart(2, "0");
                 }, 1000);
             }
         },
@@ -208,8 +203,7 @@ const vm = new Vue({
             history.back();
         },
         bookRecord: function (isbn) {
-            return;
-            window.location.href = `http://localhost:5000/reading_log.html?isbn=${isbn}`;
+            window.location.href = `https://open-hack-u-2021.web.app/reading_log.html?isbn=${isbn}`;
         },
         bookData: async function () {
             return;
@@ -217,10 +211,32 @@ const vm = new Vue({
             const userName = "ishida";
             const res = await db.doc(`users/user/${userName}/${isbn}`).get();
             const resData = res.data();
-            this.title = resData.title;
-            this.author = resData.author;
-            this.img = resData.img;
-            this.publisher = resData.publisher;
+            vm.title = resData.title;
+            vm.author = `著者 : ${resData.author}`;
+            vm.bigImg = resData.img;
+            vm.publisher = `出版社 : ${resData.publisher}`;
+            vm.public = resData.publicReview;
+            vm.url = resData.url;
+            vm.private = resData.privateReview;
+            vm.lastReadDate = resData.lastReadDate;
+            vm.hh = Math.floor(Math.floor(resData.readTime / 60) / 60) % 60;
+            vm.mm = Math.floor(resData.readTime / 60) % 60;
+            vm.ss = Math.floor(resData.readTime % 60);
+        },
+
+        bookDataUpdate: async function () {
+            const isbn = location.search.split("=")[1];
+            const userName = "ishida";
+            const res = await db.doc(`users/user/${userName}/${isbn}`).get();
+            const resData = res.data();
+            const updateData = {
+                publicReview: vm.public,
+                privateReview: vm.private,
+            };
+            await db.doc(`users/user/${userName}/${isbn}`).update(updateData);
+            $("#updateAlert").fadeIn("slow", function () {
+                $(this).delay(3000).fadeOut("slow");
+            });
         },
     },
 });

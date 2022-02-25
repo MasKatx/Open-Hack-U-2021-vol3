@@ -2,60 +2,74 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>None</title>
-
-  <!-- update the version number as needed -->
-  <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
-  <!-- include only the Firebase features as you need -->
-  <!-- <script defer src="/__/firebase/9.6.6/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/9.6.6/firebase-database-compat.js"></script> -->
-  <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
-  <!-- <script defer src="/__/firebase/9.6.6/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/9.6.6/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/9.6.6/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/9.6.6/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/9.6.6/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/9.6.6/firebase-performance-compat.js"></script> -->
-  <!--
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="test.css">
-  <script src="src/jquery-3.6.0.min.js"></script>
-  <script src="src/vue.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>read note</title>
+    <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <script src="src/jquery-3.6.0.min.js"></script>
+    <script src="src/vue.js"></script>
+    <link href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/reset.css" rel="stylesheet">
+    <link href="style/logo.css" rel="stylesheet">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/index.css">
 </head>
 
 
 <body>
-    <div id="main" v-cloak>
-        <!-- <div id="deleteAlert">削除しました</div>
-        <div id="addAlert">追加しました</div> -->
-        <h2>ホーム</h2>
-        <!-- DBにある所持している本の情報を一覧表示する -->
-        <!-- <div class="bookList flex" :id="val.isbn" v-for="val in myBook"> -->
-            <table v-for="val in myBook"> 
-                <td><img :src="val.img" class="imgURL" id="resultImg" alt="本の画像"></td>
-                <td>{{ val.title }}</td>
-                <td>{{ val.author }}</td>
-                <td>{{ val.publisher }}</td>
-                <td><input type="button" class="btn flex" value="読む" @click="read(val.isbn)"></td>
-                <td><input type="button" class="btn flex" value="記録" @click="bookRecord(val.isbn)"></td>
-                <td><input type="button" class="btn flex" value="削除" @click="bookDelete(val.isbn)"></td>
-                <td><a :href="val.url" target="_blank" v-if="flg">楽天リンク</a></td>
-            </table>
+    <div id="splash">
+        <div id="splash_logo">
+            <img src="img/MicrosoftTeams-image.png" alt="" class="fadeUp">
         </div>
-        <h3>書籍を追加</h3>
-        <p>書籍のISBN(バーコードの番号)を入力すると追加できます</p>
-        <input type="text" id="isbn" placeholder="ISBNを入力" v-model="isbn">
-        <input type="button" value="追加" @click="myBookAdd()">
-        <p>または<a href="search.html">検索画面</a>から追加</p>
-        <p @click="myBooksGet">test</p>
-        <a href="search.html">Hellooooooooooooooooooo</a>
     </div>
+    <div id="container">
+        <p>ローディング後、この画面が見えます。</p>
+    <div id="all">
+        <header id="header">
+            <a href="index.html"><img src="img/MicrosoftTeams-image (1).png" alt="Logo" height="70" width="140"></a>
+            <nav>
+                <ul id="g-navi">
+                    <li><a href="search.html">書籍検索</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div id="main" v-cloak>
+            <div id="deleteAlert">削除しました</div>
+            <div id="addAlert">追加しました</div>
+            <h1 id="pageTitle">所持書籍</h1>
+            <div class="contents-wrap" v-for="val in myBook">
+                <!-- <div class="contents-img"><img :src="val.img"></div> -->
+                <div class="contents-img"><img src="img/MicrosoftTeams-image.png"></div>
+                <div class="contents-text warps">
+                    <p>
+                        {{val.title}}<br>
+                        {{val.author}}<br>
+                        {{val.publisher}}<br>
+                    </p>
+                    <div class="Btn">
+                        <button class="btnLeft" @click="read(val.isbn)">読む</button>
+                        <button class="btn" @click="bookRecord(val.isbn)">記録</button>
+                        <button class="btn" @click="bookDelete(val.isbn)">削除</button>
+                        <a class="link" :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+                    </div>
+                </div>
+            </div>
+            <h3>書籍を追加</h3>
+            <p>書籍のISBN(バーコードの番号)を入力すると追加できます</p>
+            <label class="ef">
+                <input type="text" id="isbn" class="cp_iptxt" placeholder="ISBNを入力" v-model="isbn">
+                <button @click="myBookAdd()">追加</button>
+            </label>
+            <!-- <input type="text" id="isbn" placeholder="ISBNを入力" v-model="isbn"> -->
+            <p>または<a href="search.html">検索画面</a>から追加</p>
+        </div>
+        <footer id="footer">
+            <small>&copy; copyright.<br>Built with Firebase</small>
+        </footer>
+    </div>
+    </div>
+    <script src="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/4-1-4/js/4-1-4.js"></script>
     <script src="src/main.js"></script>
     <script src="src/sub.js"></script>
     <script src="localbook.js"></script>

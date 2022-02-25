@@ -9,7 +9,8 @@
     <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
     <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/timer.css">
     <script src="src/jquery-3.6.0.min.js"></script>
     <script src="src/vue.js"></script>
 <!-- ここまではいじらないで -->
@@ -17,8 +18,8 @@
 
 <body class="timer">
     <div id="main" v-cloak>
-        <h2>タイマー</h2>
-        <h1>{{ hh }}:{{ mm }}:{{ ss }}</h1>
+        <h2>読書タイマー</h2>
+        <h1 id="time">{{ hh }}:{{ mm }}:{{ ss }}</h1>
         <a href="javascript:void(0);" class="btn btn-border" @click="timerPause">{{ pause }}</a>
         <a href="javascript:void(0);" class="btn btn-border" @click="timerEnd">終了</a>
     </div>

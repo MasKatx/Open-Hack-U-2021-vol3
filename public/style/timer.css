@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+.timer{
+    background-color: #000;
+    font-family: 'Share Tech Mono',monospace;
+    color: #ffffff;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #daf6ff;
+    text-shadow: 0 0 20px rgba(10, 175, 230, 1),  0 0 20px rgba(10, 175, 230, 0);
+}
+
+.timer h2{
+    font-size: 48px;
+    margin-bottom: 30%;
+}
+
+#time{
+    font-size: 100px;
+}
+
+a.btn {
+    color: #fff;
+    display: inline-block;
+    padding: 5px 20px;
+    margin-top: 30%;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    font-size: 48px;
+}
+
+a.btn-border {
+    border-radius: 0;
+    background: #000;
+}
+
+a.btn-border:hover {
+    color: #adffff;
+    text-shadow: none;
+}
