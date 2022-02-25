@@ -21,6 +21,21 @@
     href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/7-1-11/css/7-1-11.css">
     <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="css/search.css">
+  <link rel="stylesheet" href="test.css">
+
+  <style>
+    /* table {
+      width: 80%;
+      margin: auto;
+    } */
+    /* table, li, th {
+      border-bottom: 1px solid black;
+    } */
+    /* li{
+      display: list-item;
+      list-style: none;
+    } */
+  </style>
 </head>
 
 <body>
@@ -51,15 +66,37 @@
     </div>
 
     <button @click="bookSearch">検索</button>
-    <div>
-      <div class="result flex" v-for="val in bookSearchResult">
-        <a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a><br>
-        {{ val.title }}<br>
-        {{ val.author }}<br>
-        {{ val.price }}<br>
-        <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+
+      <div class="contents-wrap" v-for="val in bookSearchResult">
+        <div class="contents-img"><a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a></div>
+        <div class="contents-text warps">
+          <p>{{ val.title }}<br>
+          {{ val.author }}<br>
+          {{ val.publisher }}<br>
+          {{ val.price }}</p>
+          <div class="Btn">
+            <button class="addBtn" @click="myBookAdd(val.isbn)" v-if="flg">所持書籍に追加</button>
+            <a class="addA" :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+          </div>
+          
+        </div>
       </div>
-    </div>
+
+
+      <!-- <div class="contents-wrap">
+        <li v-for="val in bookSearchResult">
+          <div class="contensts-img">
+            <a :href="val.url" id="imgURL" target="_blank">
+            <img :src="val.img" id="resultImg"></a></div>
+          </div>
+          <div>{{ val.title }}</div>
+          <div>{{ val.author }}</div>
+          <div>{{ val.publisher }}</div>
+          <div>{{ val.price }}</div>
+          <div><input type="button" value="所持書籍に追加" @click="myBookAdd(val.isbn)" v-if="flg"></div>
+          <div><a :href="val.url" target="_blank" v-if="flg">楽天リンク</a></div>
+        </li>
+      </div> -->
   </div>
 
   <script src="src/main.js"></script>
