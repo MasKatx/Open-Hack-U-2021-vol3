@@ -17,9 +17,22 @@
 
 <body>
     <div id="main" v-cloak>
-        <h2>読書記録画面(優先度:必須)</h2>
+        <div id="updateAlert">更新しました</div>
+        <h2>書籍情報・読書記録</h2>
+        <h3>{{ title }}</h3>
+        <img :src="bigImg">
+        <p>著者 : {{ author }}</p>
+        <p>出版社 : {{ publisher }}</p>
+        <p>今まで読んだ時間 : <span v-if="hh > 0">{{ hh }}時間</span><span v-if="mm > 0 || hh > 0">{{ mm }}分</span>{{ ss }}秒</p>
+        <p>最後に読んだ日 : {{ lastReadDate }}</p>
+        <h3>Public review</h3>
+        <textarea name="public" id="publicReview" cols="50" rows="10" v-model="public"></textarea>
+        <h3>Private review</h3>
+        <textarea name="private" id="privateReview" cols="50" rows="10" v-model="private"></textarea><br>
+        <input type="button" id="back" class="btn" value="戻る" onclick="history.back()">
+        <input type="button" id="update" class="btn" value="更新" @click="bookDataUpdate">
     </div>
-    <!-- <script src="src/main.js"></script> -->
+    <script src="src/main.js"></script>
 </body>
 
 </html>
