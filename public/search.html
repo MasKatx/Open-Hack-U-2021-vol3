@@ -5,48 +5,65 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>書籍検索</title>
-<!-- ここから -->
+    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="test2.css">
     <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
     <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <script src="src/jquery-3.6.0.min.js"></script>
     <script src="src/vue.js"></script>
-<!-- ここまではいじらないで -->
 </head>
 
 <body>
-    <div id="main" v-cloak>
-        <div id="addAlert">追加しました</div>
-        <h2>書籍検索</h2>
-        <input type="text" v-model="title" id="title" placeholder="タイトル"><br>
-        <input type="text" v-model="author" id="author" placeholder="著者名"><br>
-        <input type="text" v-model="publisher" id="publisherName" placeholder="出版社"><br>
-        <!-- <input type="text" v-model="isbn" id="isbn" placeholder="ISBN"><br> -->
-        <select name="sortSelect" id="sort">
-            <option value="standard">並び替え</option>
-            <option value="sales">売れている</option>
-            <option value="%2BreleaseDate">発売日(古い)</option>
-            <option value="-releaseDate">発売日(新しい)</option>
-            <option value="%2BitemPrice">価格が安い</option>
-            <option value="-itemPrice">価格が高い</option>
-            <option value="reviewCount">レビューが多い</option>
-            <option value="reviewAverage">評価が高い</option>
-        </select>
-        <input type="button" value="検索" @click="bookSearch">
-        <div>
-            <div class="result flex" v-for="val in bookSearchResult">
-                    <a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a><br>
-                    {{ val.title }}<br>
-                    {{ val.author }}<br>
-                    {{ val.publisher }}<br>
-                    {{ val.price }}<br>
-                    <input type="button" value="所持書籍に追加" @click="myBookAdd(val.isbn)" v-if="flg">
-                    <a :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
+    <div id="all">
+        <header id="header">
+            <a href="index.html"><img src="img/MicrosoftTeams-image.png" alt="Logo" height="70" width="70"></a>
+            <nav>
+                <ul id="g-navi">
+                    <li><a href="search.html">書籍検索</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div id="main" v-cloak>
+            <div id="addAlert">追加しました</div>
+            <h1 id="pageTitle">書籍検索</h1>
+            <input type="text" v-model="title" id="title" placeholder="タイトル"><br>
+            <input type="text" v-model="author" id="author" placeholder="著者名"><br>
+            <input type="text" v-model="publisher" id="publisherName" placeholder="出版社"><br>
+            <!-- <input type="text" v-model="isbn" id="isbn" placeholder="ISBN"><br> -->
+            <select name="sortSelect" id="sort">
+                <option value="standard">並び替え</option>
+                <option value="sales">売れている</option>
+                <option value="%2BreleaseDate">発売日(古い)</option>
+                <option value="-releaseDate">発売日(新しい)</option>
+                <option value="%2BitemPrice">価格が安い</option>
+                <option value="-itemPrice">価格が高い</option>
+                <option value="reviewCount">レビューが多い</option>
+                <option value="reviewAverage">評価が高い</option>
+            </select>
+            <input type="button" value="検索" @click="bookSearch">
+            <div>
+                <table>
+                    <tr v-for="val in bookSearchResult">
+                        <!-- <td><a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a></td> -->
+                        <td>{{ val.title }}</td>
+                        <td>{{ val.author }}</td>
+                        <td>{{ val.publisher }}</td>
+                        <td>{{ val.price }}</td>
+                        <td><input type="button" value="所持書籍に追加" @click="myBookAdd(val.isbn)" v-if="flg"></td>
+                        <td><button @click="myBookAdd(val.isbn)">所持書籍に追加</button></td>
+                        <td><a :href="val.url" target="_blank" v-if="flg">楽天リンク</a></td>
+                    </tr>
+                </table>
             </div>
+            <a href="index.html">home</a>
         </div>
-        <a href="index.html">home</a>
+        <footer id="footer">
+            <small>&copy; copyright.<br>Built with Firebase</small>
+        </footer>
     </div>
+
     <script src="src/main.js"></script>
     <script src="src/sub.js"></script>
 </body>
