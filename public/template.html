@@ -8,60 +8,72 @@
   <title>タイトル</title>
   <!--==============レイアウトを制御する独自のCSSを読み込み===============-->
   <link rel="stylesheet" type="text/css"
-    href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/reset.css">
-  <link rel="stylesheet" type="text/css"
     href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/5-1-5/css/5-1-5.css">
   <link rel="stylesheet" href="template.css">
+  <link rel="stylesheet" href="sample.css">
+  <script src="src/jquery-3.6.0.min.js"></script>
+  <script src="src/vue.js"></script>
+<!-- ロゴを出してから画面が出るcssの制御 -->
+  <link href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/reset.css" rel="stylesheet">
+  <link href="logo/logo.css" rel="stylesheet">
+
 </head>
 
 <body>
+  
+  <div id="splash">
+    <div id="splash_logo">
+      <img src="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/4-1-4/img/loading.svg" alt="" class="fadeUp">
+    </div>
+  </div>
+
+  <main>
+    <div id="container">
   <header id="header">
-    <h1>Logo</h1>
+    <h1>readnote</h1>
     <nav>
       <ul id="g-navi">
-        <li><a href="#area-1">Area1</a></li>
-        <li><a href="#area-2">Area2</a></li>
-        <li><a href="#area-3">Area3</a></li>
+        <li><a href="">書籍検索</a></li>
       </ul>
     </nav>
   </header>
-  <main>
-    <section id="area-1">
-    <h2>Area 1</h2>
-    <p>内容が入ります。</p>
-    <ul class="sample1">
-      <li>List1</li>
-      <li>List2</li>
-      <li>List3</li>
-      <li>List4</li>
-    </ul> -->
-    <!--/area1
-    </section>
-    <section id="area-2">
-      <h2>Area 2</h2>
-      <p>内容が入ります。</p>
-      <!--/area2-->
-    </section>
-    <section id="area-3">
-      <h2>Area 3</h2>
-      <p>内容が入ります。</p>
-      <!--/area3-->
-    </section>
-    <!--/main-->
-  </main>
-  <section id="area-1">
-    <h2>Area 1</h2>
-  </section>
-  </main>
-  <!--/main-->
+  <div id="main" v-cloak>
+    <!-- <div id="deleteAlert">削除しました</div>
+    <div id="addAlert">追加しました</div> -->
+    <h2>画面名</h2>
+    <!-- DBにある所持している本の情報を一覧表示する -->
+    <!-- <div class="bookList flex" :id="val.isbn" v-for="val in myBook"> -->
+        <table v-for="val in myBook"> 
+            <td><img :src="val.img" class="imgURL" id="resultImg" alt="本の画像"></td>
+            <td>{{ val.title }}</td>
+            <td>{{ val.author }}</td>
+            <td>{{ val.publisher }}</td>
+            <td><input type="button" class="btn flex" value="読む" @click="read(val.isbn)"></td>
+            <td><input type="button" class="btn flex" value="記録" @click="bookRecord(val.isbn)"></td>
+            <td><input type="button" class="btn flex" value="削除" @click="bookDelete(val.isbn)"></td>
+            <td><a :href="val.url" target="_blank" v-if="flg">楽天リンク</a></td>
+        </table>
+    </div>
+
+    <h3>書籍を追加</h3>
+    <p>書籍のISBN(バーコードの番号)を入力すると追加できます</p>
+    <input type="text" id="isbn" placeholder="ISBNを入力" v-model="isbn">
+    <input type="button" value="追加" @click="myBookAdd()">
+    <p>または<a href="search.html">検索画面</a>から追加</p>
 
   <footer id="footer">
     <small>&copy; copyright.</small>
+    <small>Built with Firebase</small>
   </footer>
+  <script src="src/main.js"></script>
+ <!--==============JQuery読み込み===============-->
+ <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+ integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/4-1-4/js/4-1-4.js"></script>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/5-1-5/js/5-1-5.js"></script>
+</div>
+</main>
+
 </body>
 
 </html>
