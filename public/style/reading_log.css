@@ -69,3 +69,14 @@ textarea{
     display: flex;
     justify-content: flex-end;
 }
+
+.link {
+    font-weight: 700;
+    text-decoration: none;
+    font-size     : 12pt;        /* 文字サイズ */
+    vertical-align: middle;      /* 文字位置   */
+    padding       : 5px;   /* 余白       */
+    background    : #000000;     /* 背景色     */
+    color         : #ffffff;     /* 文字色     */
+    line-height   : 1em;         /* 1行の高さ  */
+}
