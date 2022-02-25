@@ -1,5 +1,12 @@
 @charset "UTF-8";
 
+body{
+  background: #eeebe7;
+  width: auto;
+  margin: auto;
+  text-align: center;
+}
+
 /* ===== 書籍検索 ===== */
 .cp_iptxt {
   position: relative;
