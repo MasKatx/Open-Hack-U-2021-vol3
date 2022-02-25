@@ -34,17 +34,9 @@
       </label>
     </div>
 
-    <!-- <div class="cp_ipselect"> -->
-      <!-- <select class="cp_sl06" required> -->
-        <!-- <option value="standard" hidden disabled selected>並び替え</option> -->
-
-        <!-- <div class="cp_iptxt"> -->
-        <!-- <select class="cp_sl06" name="sortselect" id="sort"> -->
       <div class="sel sel--black-panther">
-        <!-- <select name="select-profession" id="select-profession"> -->
         <select name="select-profession" name="sortselect" id="sort">
-          <!-- <option value="" disabled>並び替え</option> -->
-          <option hidden>並び替え</option>
+          <option value="standard" hidden>並び替え</option>
           <option value="standard">標準</option>
           <option value="sales">売れている</option>
           <option value="%2BreleaseDate">発売日(古い)</option>
@@ -56,12 +48,9 @@
       </select>
       <span class="cp_sl06_highlight"></span>
       <span class="cp_sl06_selectbar"></span>
-      <!-- <label class="cp_sl06_selectlabel">Choose</label> -->
     </div>
 
-    <!-- <input type="button" value="検索" @click="bookSearch"> -->
     <button @click="bookSearch">検索</button>
-    <!-- <a class="btn btn-border" @click>検索</a> -->
     <div>
       <div class="result flex" v-for="val in bookSearchResult">
         <a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a><br>
