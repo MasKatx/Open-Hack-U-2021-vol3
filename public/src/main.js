@@ -62,7 +62,7 @@ const vm = new Vue({
                         title: item.title.replace("　", " "),
                         author: `著者 : ${item.author}`,
                         publisher: item.publisherName,
-                        img: item.mediumImageUrl,
+                        img: item.mediumImageUrl.split("?")[0],
                         url: item.affiliateUrl,
                         price: `価格 : ${item.itemPrice}円(税込)`,
                         isbn: item.isbn,
@@ -81,7 +81,8 @@ const vm = new Vue({
                     title: dic.title,
                     author: dic.author,
                     publisher: dic.publisher,
-                    img: dic.img, url: dic.url,
+                    img: dic.img,
+                    url: dic.url,
                     isbn: dic.isbn,
                 });
             });
@@ -112,7 +113,7 @@ const vm = new Vue({
                 title: item.title.replace("　", " "),
                 author: item.author,
                 publisher: item.publisherName,
-                img: item.mediumImageUrl,
+                img: item.mediumImageUrl.split("?")[0],
                 url: item.affiliateUrl,
                 isbn: item.isbn,
                 readTime: 0,
@@ -218,7 +219,7 @@ const vm = new Vue({
             const resData = res.data();
             vm.title = resData.title;
             vm.author = resData.author;
-            vm.bigImg = (resData.img.split("=")[0]) + ("=200x200");
+            vm.bigImg = resData.img;
             vm.publisher = resData.publisher;
             vm.public = resData.publicReview;
             vm.private = resData.privateReview;
