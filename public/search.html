@@ -19,23 +19,8 @@
     href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/reset.css">
   <link rel="stylesheet" type="text/css"
     href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/7-1-11/css/7-1-11.css">
-    <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="css/search.css">
-  <link rel="stylesheet" href="test.css">
-
-  <style>
-    /* table {
-      width: 80%;
-      margin: auto;
-    } */
-    /* table, li, th {
-      border-bottom: 1px solid black;
-    } */
-    /* li{
-      display: list-item;
-      list-style: none;
-    } */
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="search.css">
 </head>
 
 <body>
@@ -49,54 +34,37 @@
       </label>
     </div>
 
-      <div class="sel sel--black-panther">
-        <select name="select-profession" name="sortselect" id="sort">
-          <option value="standard" hidden>並び替え</option>
-          <option value="standard">標準</option>
-          <option value="sales">売れている</option>
-          <option value="%2BreleaseDate">発売日(古い)</option>
-          <option value="-releaseDate">発売日(新しい)</option>
-          <option value="%2BitemPrice">価格が安い</option>
-          <option value="-itemPrice">価格が高い</option>
-          <option value="reviewCount">レビューが多い</option>
-          <option value="reviewAverage">評価が高い</option>
+    <div class="sel sel--black-panther">
+      <select name="select-profession" name="sortselect" id="sort">
+        <option value="standard" hidden>並び替え</option>
+        <option value="standard">標準</option>
+        <option value="sales">売れている</option>
+        <option value="%2BreleaseDate">発売日(古い)</option>
+        <option value="-releaseDate">発売日(新しい)</option>
+        <option value="%2BitemPrice">価格が安い</option>
+        <option value="-itemPrice">価格が高い</option>
+        <option value="reviewCount">レビューが多い</option>
+        <option value="reviewAverage">評価が高い</option>
       </select>
-      <span class="cp_sl06_highlight"></span>
-      <span class="cp_sl06_selectbar"></span>
     </div>
 
     <button @click="bookSearch">検索</button>
 
-      <div class="contents-wrap" v-for="val in bookSearchResult">
-        <div class="contents-img"><a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a></div>
-        <div class="contents-text warps">
-          <p>{{ val.title }}<br>
+    <div class="contents-wrap" v-for="val in bookSearchResult">
+      <div class="contents-img"><a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a>
+      </div>
+      <div class="contents-text">
+        <p>{{ val.title }}<br>
           {{ val.author }}<br>
           {{ val.publisher }}<br>
           {{ val.price }}</p>
-          <div class="Btn">
-            <button class="addBtn" @click="myBookAdd(val.isbn)" v-if="flg">所持書籍に追加</button>
-            <a class="addA" :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
-          </div>
-          
+        <div class="Btn">
+          <button class="addBtn" @click="myBookAdd(val.isbn)" v-if="flg">所持書籍に追加</button>
+          <a class="addA" :href="val.url" target="_blank" v-if="flg">楽天リンク</a>
         </div>
+
       </div>
-
-
-      <!-- <div class="contents-wrap">
-        <li v-for="val in bookSearchResult">
-          <div class="contensts-img">
-            <a :href="val.url" id="imgURL" target="_blank">
-            <img :src="val.img" id="resultImg"></a></div>
-          </div>
-          <div>{{ val.title }}</div>
-          <div>{{ val.author }}</div>
-          <div>{{ val.publisher }}</div>
-          <div>{{ val.price }}</div>
-          <div><input type="button" value="所持書籍に追加" @click="myBookAdd(val.isbn)" v-if="flg"></div>
-          <div><a :href="val.url" target="_blank" v-if="flg">楽天リンク</a></div>
-        </li>
-      </div> -->
+    </div>
   </div>
 
   <script src="src/main.js"></script>
