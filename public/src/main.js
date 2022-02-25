@@ -61,7 +61,7 @@ const vm = new Vue({
                     {
                         title: item.title.replace("　", " "),
                         author: `著者 : ${item.author}`,
-                        publisher: item.publisherName,
+                        publisher: `出版社 : ${item.publisherName}`,
                         img: item.mediumImageUrl.split("?")[0],
                         url: item.affiliateUrl,
                         price: `価格 : ${item.itemPrice}円(税込)`,
@@ -79,8 +79,8 @@ const vm = new Vue({
                 const dic = postDoc.data();
                 vm.myBook.push({
                     title: dic.title,
-                    author: dic.author,
-                    publisher: dic.publisher,
+                    author: `著者 : ${dic.author}`,
+                    publisher: `出版社 : ${dic.publisher}`,
                     img: dic.img,
                     url: dic.url,
                     isbn: dic.isbn,
