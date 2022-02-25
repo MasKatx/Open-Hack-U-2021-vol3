@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+select {
+    background-color: transparent;
+    border-style: none;
+    color: inherit;
+}
+
 .cp_iptxt {
     position: relative;
     width: 50%;
