@@ -39,8 +39,7 @@
             <div id="addAlert">追加しました</div>
             <h1 id="pageTitle">所持書籍</h1>
             <div class="contents-wrap" v-for="val in myBook">
-                <!-- <div class="contents-img"><img :src="val.img"></div> -->
-                <div class="contents-img"><img src="img/MicrosoftTeams-image.png"></div>
+                <div class="contents-img"><img :src="val.img"></div>
                 <div class="contents-text warps">
                     <p>
                         {{val.title}}<br>
@@ -61,8 +60,7 @@
                 <input type="text" id="isbn" class="cp_iptxt" placeholder="ISBNを入力" v-model="isbn">
                 <button @click="myBookAdd()">追加</button>
             </label>
-            <!-- <input type="text" id="isbn" placeholder="ISBNを入力" v-model="isbn"> -->
-            <p>または<a href="search.html">検索画面</a>から追加</p>
+            <p>または<a href="search.html" class="bookAdd">検索画面</a>から追加</p>
         </div>
         <footer id="footer">
             <small>&copy; copyright.<br>Built with Firebase</small>

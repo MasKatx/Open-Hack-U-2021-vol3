@@ -51,9 +51,8 @@
             </div>
             <button @click="bookSearch">検索</button>
             <div class="contents-wrap" v-for="val in bookSearchResult">
-                <!-- <div class="contents-img"><a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a></div> -->
-                <div class="contents-img"><a href="val.url" id="imgURL" target="_blank"><img src="img/MicrosoftTeams-image.png" id="resultImg"></a></div>
-                <div class="contents-text warps">
+                <div class="contents-img"><a :href="val.url" id="imgURL" target="_blank"><img :src="val.img" id="resultImg"></a></div>
+                <div class="contents-text"><!--   warps -->
                     <p>
                         {{ val.title }}<br>
                         {{ val.author }}<br>

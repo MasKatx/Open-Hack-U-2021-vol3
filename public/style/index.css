@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.bookAdd {
+    color: #000;
+}
+
 button {
     border: 2px solid #000;
     border-radius: 0;
@@ -13,11 +17,8 @@ button {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 7rem;
-}
-
-.contents-wrap {
     width: 80%;
-    margin: 1%;
+    margin: 0 auto;
     flex-direction: row;
 }
 
@@ -61,11 +62,17 @@ button {
     justify-content: flex-end;
 }
 
-.link{
-    display: block;
-    margin: 10px;
+.link {
+    font-weight: 700;
+    text-decoration: none;
+    font-size     : 9pt;        /* 文字サイズ */
+    vertical-align: middle;      /* 文字位置   */
+    padding       : 12px 5px;   /* 余白       */
+    margin: 5px;
+    background    : #000000;     /* 背景色     */
+    color         : #ffffff;     /* 文字色     */
+    line-height   : 1em;         /* 1行の高さ  */
 }
-
 
 .cp_iptxt {
     font: 15px/24px sans-serif;
