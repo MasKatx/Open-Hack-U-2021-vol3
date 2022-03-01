@@ -1,0 +1,19 @@
+【参考URL 覚えている範囲】
+
+●プルダウンメニュー
+https://kodocode.net/design-css-selectlist/
+
+●flexbox
+https://32web.net/html-css/display-flex/
+https://web-bruno.com/flexbox-css3/
+https://teratail.com/questions/239581
+
+●リンクボタン
+https://webparts.cman.jp/button/a/
+
+●textarea
+https://code-kitchen.dev/html/textarea/
+
+●全体的
+https://coco-factory.jp/ugokuweb/
+https://copypet.jp/
