@@ -1,7 +1,22 @@
 let db = {};
+let uid = "";
 document.addEventListener("DOMContentLoaded", async function () {
     db = await firebase.firestore();
-    vm.myBooksGet();
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            if (location.pathname === "/login.html" || location.pathname === "/signup.html") {
+                window.location.href = "/";
+                return;
+            }
+            uid = user.uid;
+            vm.myBooksGet();
+        } else {
+            if (location.pathname !== "/login.html" && location.pathname !== "/signup.html"){
+                window.location.href = "/login.html";
+                return;
+            }
+        }
+    });
     if (location.pathname === "/timer.html") {
         vm.timerLoad();
     } else if (location.pathname === "/reading_log.html") {
@@ -36,14 +51,39 @@ const vm = new Vue({
         pause: "一時停止",
     },
     methods: {
+        signup: async function () {
+            const mail = $("#mail").val();
+            const password = $("#pass").val();
+            await firebase.auth().createUserWithEmailAndPassword(mail, password).then(() => {
+                window.location.href = "/";
+            });
+        },
+
+        login: async function () {
+            const mail = $("#mail").val();
+            const password = $("#pass").val();
+            await firebase.auth().signInWithEmailAndPassword(mail, password).then(() => {
+                window.location.href = "/";
+            });
+        },
+
+        logout: function () {
+            if (!window.confirm("ログアウトしますか？")){
+                return;
+            }
+            firebase.auth().signOut().then(() => {
+                window.location.href = "/login.html";
+            });
+        },
+
         bookSearch: async function () {
             vm.bookSearchResult = [];
             const sort = $("option:selected").val();
             let url = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&sort=${sort}&applicationId=${fffun()}&affiliateId=245eb4c3.2431bbf0.245eb4c4.d8af5e40`;
             const urlTmp = url;
-            url += vm.title != "" ? `&title=${vm.title}` : "";
-            url += vm.author != "" ? `&author=${vm.author}` : "";
-            url += vm.publisher != "" ? `&publisherName=${vm.publisher}` : "";
+            url += vm.title !== "" ? `&title=${vm.title}` : "";
+            url += vm.author !== "" ? `&author=${vm.author}` : "";
+            url += vm.publisher !== "" ? `&publisherName=${vm.publisher}` : "";
             if (url === urlTmp) {
                 alert("入力してください");
                 return;
@@ -61,7 +101,7 @@ const vm = new Vue({
                     {
                         title: item.title.replace("　", " "),
                         author: `著者 : ${item.author}`,
-                        publisher: `出版社 : ${item.publisherName != "" ? item.publisherName : "データがありません"}`,
+                        publisher: `出版社 : ${item.publisherName !== "" ? item.publisherName : "データがありません"}`,
                         img: item.mediumImageUrl.split("?")[0],
                         url: item.affiliateUrl,
                         price: `価格 : ${item.itemPrice}円(税込)`,
@@ -73,14 +113,13 @@ const vm = new Vue({
 
         myBooksGet: async function () {
             vm.myBook = [];
-            const userName = "ishida";
-            const res = await db.collection(`users/user/${userName}`).get();
+            const res = await db.collection(`readNote/users/${uid}`).get();
             res.forEach((postDoc) => {
                 const dic = postDoc.data();
                 vm.myBook.push({
                     title: dic.title,
                     author: `著者 : ${dic.author}`,
-                    publisher: `出版社 : ${dic.publisher != "" ? dic.publisher : "データがありません"}`,
+                    publisher: `出版社 : ${dic.publisher !== "" ? dic.publisher : "データがありません"}`,
                     img: dic.img,
                     url: dic.url,
                     isbn: dic.isbn,
@@ -90,7 +129,7 @@ const vm = new Vue({
 
         myBookAdd: async function (isbn = 0) {
             if (isbn === 0) {
-                if (vm.isbn.length != 13) {
+                if (vm.isbn.length !== 13) {
                     alert("13桁のISBN(バーコードの番号)を入力してください");
                     return;
                 }
@@ -122,15 +161,13 @@ const vm = new Vue({
                 lastReadDate: "None",
             };
             const bookIsbn = item.isbn;
-            const userName = "ishida";
-            const checkLog = await db.doc(`users/user/${userName}/${isbn}`).get();
-            console.log(checkLog);
-            if (checkLog.data() != undefined) {
+            const checkLog = await db.doc(`readNote/users/${uid}/${isbn}`).get();
+            if (checkLog.data() !== undefined) {
                 alert("すでに追加されています");
                 return;
             }
-            await db.doc(`users/user/${userName}/${bookIsbn}`).set(addData);
-            const testLog = await db.collection(`users/user/${userName}`).get();
+            await db.doc(`readNote/users/${uid}/${bookIsbn}`).set(addData);
+            const testLog = await db.collection(`readNote/users/${uid}`).get();
             testLog.forEach((postDoc) => {
                 const dic = postDoc.data();
                 vm.myBook.push({
@@ -154,8 +191,7 @@ const vm = new Vue({
             if (!window.confirm("削除しますか？")) {
                 return;
             }
-            const userName = "ishida";
-            await db.doc(`users/user/${userName}/${isbn}`).delete();
+            await db.doc(`readNote/users/${uid}/${isbn}`).delete();
             vm.myBooksGet();
             $("#deleteAlert").fadeIn("slow", function () {
                 $(this).delay(3000).fadeOut("slow");
@@ -203,11 +239,10 @@ const vm = new Vue({
             const time = (vm.endTime - vm.startTime - vm.tmpTime) / 1000;
 
             const isbn = location.search.split("=")[1];
-            const userName = "ishida";
-            const res = await db.doc(`users/user/${userName}/${isbn}`).get();
+            const res = await db.doc(`readNote/users/${uid}/${isbn}`).get();
             const resData = res.data();
             const readTime = Math.floor((time + resData.readTime) * 10) / 10;
-            await db.doc(`users/user/${userName}/${isbn}`).update({
+            await db.doc(`readNote/users/${uid}/${isbn}`).update({
                 readTime: readTime,
                 lastReadDate: new Date().toLocaleString("ja"),
             });
@@ -220,8 +255,7 @@ const vm = new Vue({
 
         bookData: async function () {
             const isbn = location.search.split("=")[1];
-            const userName = "ishida";
-            const res = await db.doc(`users/user/${userName}/${isbn}`).get();
+            const res = await db.doc(`readNote/users/${uid}/${isbn}`).get();
             const resData = res.data();
             vm.title = resData.title;
             vm.author = `著者 : ${resData.author}`;
@@ -238,14 +272,13 @@ const vm = new Vue({
 
         bookDataUpdate: async function () {
             const isbn = location.search.split("=")[1];
-            const userName = "ishida";
-            const res = await db.doc(`users/user/${userName}/${isbn}`).get();
+            const res = await db.doc(`readNote/users/${uid}/${isbn}`).get();
             const resData = res.data();
             const updateData = {
                 publicReview: vm.public,
                 privateReview: vm.private,
             };
-            await db.doc(`users/user/${userName}/${isbn}`).update(updateData);
+            await db.doc(`readNote/users/${uid}/${isbn}`).update(updateData);
             $("#updateAlert").fadeIn("slow", function () {
                 $(this).delay(3000).fadeOut("slow");
             });
