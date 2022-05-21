@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>read note</title>
+    <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/9.8.1/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <script src="src/jquery-3.6.0.min.js"></script>
+    <script src="src/vue.min.js"></script>
+    <!-- <link href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/reset.css" rel="stylesheet"> -->
+    <!-- <link href="style/logo.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="style/style.css">
+    <!-- <link rel="stylesheet" href="style/index.css"> -->
+</head>
+
+<body>
+    <div id="all">
+        <!-- <header id="header">
+            <a href="index.html"><img src="img/MicrosoftTeams-image (1).png" alt="Logo" height="70" width="140"></a>
+        </header> -->
+        <div id="main" v-cloak>
+            <h1 style="font-size: 2rem;">ログイン</h1><br>
+            <form v-on:submit.prevent="login()">
+                メールアドレス：<input type="email" name="mail" id="mail" required style="margin: 0.5em;"><br>
+                パスワード　　：<input type="password" name="pass" id="pass" required style="margin: 0.5em;"><br>
+                <input type="submit" value="ログイン" style="margin: 1em;">
+            </form>
+            <br>
+            <p>アカウントをお持ちでない方は<a href="signup.html">こちら</a></p>
+        </div>
+        <footer id="footer">
+            <small>&copy; copyright.<br>Built with Firebase</small>
+        </footer>
+    </div>
+    <script src="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/4-1-4/js/4-1-4.js"></script>
+    <script defer src="src/main.min.js"></script>
+</body>
+
+</html>

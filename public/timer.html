@@ -7,12 +7,13 @@
     <title>タイマー</title>
 <!-- ここから -->
     <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/9.8.1/firebase-auth-compat.js"></script>
     <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/timer.css">
     <script src="src/jquery-3.6.0.min.js"></script>
-    <script src="src/vue.js"></script>
+    <script src="src/vue.min.js"></script>
 <!-- ここまではいじらないで -->
 </head>
 
@@ -23,7 +24,7 @@
         <a href="javascript:void(0);" class="btn btn-border" @click="timerPause">{{ pause }}</a>
         <a href="javascript:void(0);" class="btn btn-border" @click="timerEnd">終了</a>
     </div>
-    <script src="src/main.js"></script>
+    <script src="src/main.min.js"></script>
 </body>
 
 </html>

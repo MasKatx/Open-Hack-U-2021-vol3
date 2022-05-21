@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>read note</title>
     <script defer src="/__/firebase/9.6.6/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/9.8.1/firebase-auth-compat.js"></script>
     <script defer src="/__/firebase/9.6.6/firebase-firestore-compat.js"></script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
     <script src="src/jquery-3.6.0.min.js"></script>
-    <script src="src/vue.js"></script>
+    <script src="src/vue.min.js"></script>
     <link href="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/reset.css" rel="stylesheet">
     <link href="style/logo.css" rel="stylesheet">
     <link rel="stylesheet" href="style/style.css">
@@ -29,6 +30,7 @@
             <a href="index.html"><img src="img/MicrosoftTeams-image (1).png" alt="Logo" height="70" width="140"></a>
             <nav>
                 <ul id="g-navi">
+                    <li><a href="javascript:void(0)" onclick="vm.logout()">ログアウト</a></li>
                     <li><a href="search.html">書籍検索</a></li>
                 </ul>
             </nav>
@@ -67,8 +69,8 @@
     </div>
     </div>
     <script src="https://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/4-1-4/js/4-1-4.js"></script>
-    <script src="src/main.js"></script>
-    <script src="src/sub.js"></script>
+    <script src="src/main.min.js"></script>
+    <script src="src/sub.min.js"></script>
 </body>
 
 </html>
