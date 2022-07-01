@@ -2,13 +2,16 @@ let db = {};
 let uid = "";
 document.addEventListener("DOMContentLoaded", async function () {
     db = await firebase.firestore();
-    firebase.auth().onAuthStateChanged(function (user) {
+    await firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             if (location.pathname === "/login.html" || location.pathname === "/signup.html") {
                 window.location.href = "/";
                 return;
             }
             uid = user.uid;
+            if (location.pathname === "/reading_log.html") {
+                vm.bookData();
+            }
             vm.myBooksGet();
         } else {
             if (location.pathname !== "/login.html" && location.pathname !== "/signup.html"){
@@ -19,8 +22,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
     if (location.pathname === "/timer.html") {
         vm.timerLoad();
-    } else if (location.pathname === "/reading_log.html") {
-        vm.bookData();
     }
 });
 
@@ -56,6 +57,17 @@ const vm = new Vue({
             const password = $("#pass").val();
             await firebase.auth().createUserWithEmailAndPassword(mail, password).then(() => {
                 window.location.href = "/";
+            }).catch((e) => {
+                const errorCode = e.code;
+                if (errorCode === "auth/email-already-in-use") {
+                    alert("そのメールアドレスは使用されています");
+                } else if (errorCode === "auth/invalid-email") {
+                    alert("メールアドレスの形式が正しくありません");
+                } else if (errorCode === "auth/weak-password") {
+                    alert("パスワードは6文字以上で入力してください");
+                } else {
+                    alert(`Error\n${errorCode}`);
+                }
             });
         },
 
@@ -64,6 +76,13 @@ const vm = new Vue({
             const password = $("#pass").val();
             await firebase.auth().signInWithEmailAndPassword(mail, password).then(() => {
                 window.location.href = "/";
+            }).catch((e) => {
+                const errorCode = e.code;
+                if (errorCode === "auth/user-not-found" || errorCode === "auth/wrong-password") {
+                    alert("メールアドレスまたはパスワードが間違っています");
+                } else {
+                    alert(`Error\n${errorCode}`);
+                }
             });
         },
 
@@ -113,7 +132,7 @@ const vm = new Vue({
 
         myBooksGet: async function () {
             vm.myBook = [];
-            const res = await db.collection(`readNote/users/${uid}`).get();
+            const res = await db.collection(`users/${uid}/books`).get();
             res.forEach((postDoc) => {
                 const dic = postDoc.data();
                 vm.myBook.push({
@@ -125,6 +144,9 @@ const vm = new Vue({
                     isbn: dic.isbn,
                 });
             });
+            if (vm.myBook.length === 0) {
+                $("#bookNone").html("<p>書籍がありません<br><a href='/search.html'>検索画面</a>などから追加してください</p>");
+            }
         },
 
         myBookAdd: async function (isbn = 0) {
@@ -161,13 +183,13 @@ const vm = new Vue({
                 lastReadDate: "None",
             };
             const bookIsbn = item.isbn;
-            const checkLog = await db.doc(`readNote/users/${uid}/${isbn}`).get();
+            const checkLog = await db.doc(`users/${uid}/books/${isbn}`).get();
             if (checkLog.data() !== undefined) {
                 alert("すでに追加されています");
                 return;
             }
-            await db.doc(`readNote/users/${uid}/${bookIsbn}`).set(addData);
-            const testLog = await db.collection(`readNote/users/${uid}`).get();
+            await db.doc(`users/${uid}/books/${bookIsbn}`).set(addData);
+            const testLog = await db.collection(`users/${uid}/books`).get();
             testLog.forEach((postDoc) => {
                 const dic = postDoc.data();
                 vm.myBook.push({
@@ -191,7 +213,7 @@ const vm = new Vue({
             if (!window.confirm("削除しますか？")) {
                 return;
             }
-            await db.doc(`readNote/users/${uid}/${isbn}`).delete();
+            await db.doc(`users/${uid}/books/${isbn}`).delete();
             vm.myBooksGet();
             $("#deleteAlert").fadeIn("slow", function () {
                 $(this).delay(3000).fadeOut("slow");
@@ -239,10 +261,10 @@ const vm = new Vue({
             const time = (vm.endTime - vm.startTime - vm.tmpTime) / 1000;
 
             const isbn = location.search.split("=")[1];
-            const res = await db.doc(`readNote/users/${uid}/${isbn}`).get();
+            const res = await db.doc(`users/${uid}/books/${isbn}`).get();
             const resData = res.data();
             const readTime = Math.floor((time + resData.readTime) * 10) / 10;
-            await db.doc(`readNote/users/${uid}/${isbn}`).update({
+            await db.doc(`users/${uid}/books/${isbn}`).update({
                 readTime: readTime,
                 lastReadDate: new Date().toLocaleString("ja"),
             });
@@ -255,7 +277,7 @@ const vm = new Vue({
 
         bookData: async function () {
             const isbn = location.search.split("=")[1];
-            const res = await db.doc(`readNote/users/${uid}/${isbn}`).get();
+            const res = await db.doc(`users/${uid}/books/${isbn}`).get();
             const resData = res.data();
             vm.title = resData.title;
             vm.author = `著者 : ${resData.author}`;
@@ -272,13 +294,13 @@ const vm = new Vue({
 
         bookDataUpdate: async function () {
             const isbn = location.search.split("=")[1];
-            const res = await db.doc(`readNote/users/${uid}/${isbn}`).get();
+            const res = await db.doc(`users/${uid}/books/${isbn}`).get();
             const resData = res.data();
             const updateData = {
                 publicReview: vm.public,
                 privateReview: vm.private,
             };
-            await db.doc(`readNote/users/${uid}/${isbn}`).update(updateData);
+            await db.doc(`users/${uid}/books/${isbn}`).update(updateData);
             $("#updateAlert").fadeIn("slow", function () {
                 $(this).delay(3000).fadeOut("slow");
             });
